@@ -1,0 +1,93 @@
+﻿body {
+    background-color: #BFBFB8;
+    display: flexbox;
+
+    margin: 0;
+    padding: 0;
+}
+
+
+.borda_superior {
+    background-color: #4C594F;
+    height: 12vh;
+    margin-bottom: 6vh;
+}
+
+.botoes_line {
+    display: inline-flex;
+}
+
+.botao {
+    height: 10vh;
+    width: 10vw;
+    background-color: #35403A;
+    border: black, 1px;
+    border-radius: 20px;
+    margin-left: 6vw;
+    align-content: center;
+    text-align: center;
+    cursor: pointer;
+}
+
+.text_botao {
+    font-size: 3vh;
+}
+
+.icons {
+    height: 4vh;
+}
+
+
+
+
+
+/* teste */
+
+/* Painel escondido à direita */
+.painel {
+    position: fixed;
+    top: 0;
+    right: -110vw; /* fora da tela */
+    width: 100vw;
+    height: 100%;
+    background-color: transparent;
+    padding-left: 20px;
+    transition: right 0.7s ease; /* animação */
+}
+
+    /* Painel visível */
+    .painel.ativo {
+        right: 0vw;
+        left: 9vw;
+    }
+
+.painel_clientes {
+    width: 100%;
+    height: 100%;
+    padding-top: 10vh;
+    padding-left: 2vw;
+    padding-right: 2vw;
+    background-color: #BFBFB8;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+    overflow-y: auto;
+}
+
+.fechar {
+    position: absolute;
+    top: 1vh;
+    left: 0vw;
+    background-color: rgb(127, 127, 237);
+    cursor: pointer;
+    width: 3vw;
+    height: 4vh;
+}
+
+
+
+
+
+
+/* Importar datatables */
+/* cdn.datatables.net/2.3.3/css/dataTables.dataTables.min.css
+
+let table = new DataTable('#myTable'); */
