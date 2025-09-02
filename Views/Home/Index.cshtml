@@ -1,6 +1,5 @@
 ﻿@using System.Data
 @using System.Linq
-@model DataTable
 @{
     ViewData["Title"] = "Home Page";
     Layout = null;
@@ -65,22 +64,33 @@
                             <th>Telefone</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach (DataRow row in Model.Rows.Cast<DataRow>())
-                        {
-                            <tr>
-                                <td>@row["Nome"]</td>
-                                <td>@row["CPF"]</td>
-                                <td>@row["Telefone"]</td>
-                            </tr>
-                        }
-                    </tbody>
                 </table>
 
             </div>
 
         </div>
+    @section Scripts {
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
 
+        <script>
+            $(document).ready(function () {
+                    $('#tabelaClientes').DataTable({
+                        "ajax": {
+                        "url": "/Clientes/GetClientes",
+                        "type": "GET",
+                        "dataSrc": "data"
+                    },
+                    "columns": [
+                        { "data": "Nome" },
+                        { "data": "CPF" },
+                        { "data": "Telefone" }
+                    ]
+                });
+            });
+        </script>
+    }
     <script src="~/js/site.js"></script>
     </body>
 
