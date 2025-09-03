@@ -15,15 +15,16 @@ namespace VidracariaDoMarcinho.Controllers
 
         public IActionResult Index()
         {
-            var clientes = _context.clientes.ToList();
+            var clientes = _context.Clientes.ToList();
             return View(); // View que conterá o DataTable
         }
 
         [HttpGet]
-        public IActionResult GetClientes()
+        public JsonResult GetClientes()
         {
-            var clientes = _context.clientes.ToList();
+            var clientes = _context.Clientes.ToList();
             return Json(new { data = clientes }); // formato esperado pelo DataTable
         }
+
     }
 }

@@ -2,7 +2,7 @@
 @using System.Linq
 @{
     ViewData["Title"] = "Home Page";
-    Layout = null;
+    // Layout = null;
 }
 
 
@@ -62,10 +62,11 @@
                             <th>Nome</th>
                             <th>CPF</th>
                             <th>Telefone</th>
+                            <th class="coluna_botao"></th>
+                            <th class="coluna_botao"></th>
                         </tr>
                     </thead>
                 </table>
-
             </div>
 
         </div>
@@ -80,18 +81,38 @@
                         "ajax": {
                         "url": "/Clientes/GetClientes",
                         "type": "GET",
-                        "dataSrc": "data"
+                        "dataSrc": "data",
+                        "layout": {
+                            "topStart": {
+                                "buttons": ['Editar', 'Remover']
+                            }
+                        }
                     },
                     "columns": [
                         { "data": "Nome" },
                         { "data": "CPF" },
-                        { "data": "Telefone" }
+                        { "data": "Telefone" },
+                        { 
+                            "button": null,
+                            "orderable": false,
+                            "serchable": false,
+                            "render": function (data, type, row) {
+                                return `<button class="botao_datatable" onclick="editarCliente('${row.cpf}')">Editar</button>`;
+                            }
+                        },
+                        {
+                            "button": null,
+                            "orderable": false,
+                            "serchable": false,
+                            "render": function (data, type, row) {
+                                return `<button class="botao_datatable" onclick="removerCliente('${row.cpf}')">Remover</button>`;
+                            }
+                        }
                     ]
                 });
             });
         </script>
     }
-    <script src="~/js/site.js"></script>
     </body>
 
 </html>

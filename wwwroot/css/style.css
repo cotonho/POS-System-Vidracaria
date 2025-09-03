@@ -62,7 +62,7 @@
     }
 
 .painel_clientes {
-    width: 100%;
+    width: 86vw;
     height: 100%;
     padding-top: 10vh;
     padding-left: 2vw;
@@ -71,6 +71,7 @@
     box-shadow: -2px 0 5px rgba(0,0,0,0.3);
     overflow-y: auto;
 }
+
 
 .fechar {
     position: absolute;
@@ -83,8 +84,13 @@
 }
 
 
+.coluna_botao {
+    max-width:1vw;
+}
 
-
+.botao_datatable {
+     cursor: pointer
+}
 
 
 /* Importar datatables */
