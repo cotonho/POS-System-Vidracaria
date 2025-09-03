@@ -1,0 +1,31 @@
+﻿@model Cliente
+
+
+
+<html>
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidraçaria do Marcinho</title>
+</head>
+
+<link rel="stylesheet" href="~/css/reset.css">
+<link rel="stylesheet" href="~/css/style.css">
+
+<body>
+    <div class="borda_superior"></div>
+
+    <div class="exibicao_Cliente"">
+
+        <h2>Detalhes do Cliente</h2>
+
+        <p><strong>Nome:</strong> @Model.Nome</p>
+        <p><strong>CPF:</strong> @Model.CPF</p>
+        <p><strong>Telefone:</strong> @Model.Telefone</p>
+        <p></p>
+    </div>
+</body>
+
+</html>

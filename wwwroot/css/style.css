@@ -40,7 +40,6 @@
 
 
 
-
 /* teste */
 
 /* Painel escondido à direita */
@@ -88,9 +87,19 @@
     max-width:1vw;
 }
 
-.botao_datatable {
-     cursor: pointer
+.hyperlink_tabela{
+    color: inherit; /* herda a cor do elemento pai */
+    text-decoration: none; /* remove o sublinhado */
 }
+
+.botao_tabela {
+    text-align: center;
+    cursor: pointer;
+    width: 5vw;
+    height: 4vh;
+    background-color: gray;
+}
+
 
 
 /* Importar datatables */

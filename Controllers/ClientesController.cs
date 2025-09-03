@@ -13,17 +13,22 @@ namespace VidracariaDoMarcinho.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public ActionResult Index()
         {
             var clientes = _context.Clientes.ToList();
-            return View(); // View que conterá o DataTable
+            return View(clientes); // View que conterá o DataTable
+        }
+        public ActionResult CrudCliente(string cpf)
+        {
+            var cliente = _context.Clientes.FirstOrDefault(cliente => cliente.CPF == cpf);
+            return View(cliente); // View que conterá o DataTable
         }
 
-        [HttpGet]
-        public JsonResult GetClientes()
+        public ActionResult VisualizarCliente(string cpf)
         {
-            var clientes = _context.Clientes.ToList();
-            return Json(new { data = clientes }); // formato esperado pelo DataTable
+            var cliente = _context.Clientes.FirstOrDefault(cliente => cliente.CPF == cpf);
+
+            return View(cliente);
         }
 
     }

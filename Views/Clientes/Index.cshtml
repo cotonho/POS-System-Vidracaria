@@ -14,9 +14,9 @@
     <title>Vidraçaria do Marcinho</title>
 </head>
 
-
 <link rel="stylesheet" href="~/css/reset.css">
 <link rel="stylesheet" href="~/css/style.css">
+@* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"> *@
 
 
 <body>
@@ -57,12 +57,13 @@
 
         <div class="painel_clientes">
 
-            <table id="tabelaClientes" class="display">
+            <table id="tabelaClientes" class="display table">
                 <thead>
                     <tr>
                         <th>Nome</th>
                         <th>CPF</th>
                         <th>Telefone</th>
+                        <th></th>
                     </tr>
                 </thead>
 
@@ -73,6 +74,11 @@
                             <td>@cliente.Nome</td>
                             <td>@cliente.CPF</td>
                             <td>@cliente.Telefone</td>
+                            <td>
+                                <a class="hyperlink_tabela" href="@Url.Action("VisualizarCliente", "Clientes", new { cpf = @cliente.CPF })">
+                                    <div class="botao_tabela">Visualizar Cliente</div>
+                                </a>
+                            </td>
                         </tr>
                     }
 

@@ -13,3 +13,7 @@ abrir.addEventListener('click', () => {
 fechar.addEventListener('click', () => {
     painel.classList.remove('ativo');
 });
+
+$(document).ready(function () {
+    $('.table').DataTable();
+});
