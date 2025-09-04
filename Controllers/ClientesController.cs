@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VidracariaDoMarcinho.Data;
+using VidracariaDoMarcinho.Models;
 using System.Linq;
 
 namespace VidracariaDoMarcinho.Controllers
@@ -29,6 +30,29 @@ namespace VidracariaDoMarcinho.Controllers
             var cliente = _context.Clientes.FirstOrDefault(cliente => cliente.CPF == cpf);
 
             return View(cliente);
+        }
+
+        public JsonResult CrudUsuario(Cliente cliente)
+        {
+            var clienteAlterado = _context.Clientes.FirstOrDefault(c => c.CPF == cliente.CPF);
+            if (clienteAlterado != null)
+            {
+                clienteAlterado.Nome = cliente.Nome;
+                clienteAlterado.Telefone = cliente.Telefone;
+                clienteAlterado.Rua = cliente.Rua;
+                clienteAlterado.Numero = cliente.Numero;
+                clienteAlterado.Cidade = cliente.Cidade;
+                clienteAlterado.Bairro = cliente.Bairro;
+                clienteAlterado.CEP = cliente.CEP;
+            }
+            else
+            {
+                _context.Clientes.Add(cliente);
+            }
+
+            _context.SaveChanges();
+            return Json(new { success = true, message = "Cliente salvo com sucesso!" });
+
         }
 
     }
