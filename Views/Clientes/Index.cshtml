@@ -64,6 +64,7 @@
                         <th>CPF</th>
                         <th>Telefone</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
 
@@ -79,6 +80,11 @@
                                     <div class="botao_tabela">Visualizar Cliente</div>
                                 </a>
                             </td>
+                            <td>
+                                <a class="hyperlink_tabela" href="@Url.Action("DeleteUsuario", "Clientes", new { cpf = cliente.CPF })">
+                                    <div class="botao_tabela">Remover</div>
+                                </a>
+                            </td>
                         </tr>
                     }
 
@@ -90,6 +96,7 @@
             <a class="hyperlink_tabela" href="@Url.Action("VisualizarCliente", "Clientes")">
                 <div class="botao_tabela">Adicionar Cliente</div>
             </a>
+
         </div>
 
     </div>
