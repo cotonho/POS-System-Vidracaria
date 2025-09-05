@@ -9,6 +9,33 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="NovaPasta\**" />
+    <Compile Remove="Views\NovaPasta1\**" />
+    <Compile Remove="Views\NovaPasta\**" />
+    <Compile Remove="wwwroot\NovaPasta\**" />
+    <Content Remove="NovaPasta\**" />
+    <Content Remove="Views\NovaPasta1\**" />
+    <Content Remove="Views\NovaPasta\**" />
+    <Content Remove="wwwroot\NovaPasta\**" />
+    <EmbeddedResource Remove="NovaPasta\**" />
+    <EmbeddedResource Remove="Views\NovaPasta1\**" />
+    <EmbeddedResource Remove="Views\NovaPasta\**" />
+    <EmbeddedResource Remove="wwwroot\NovaPasta\**" />
+    <None Remove="NovaPasta\**" />
+    <None Remove="Views\NovaPasta1\**" />
+    <None Remove="Views\NovaPasta\**" />
+    <None Remove="wwwroot\NovaPasta\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Views\Materiais\EditarMaterial.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Views\Pedidos\Index.cshtml.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.5.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8">
