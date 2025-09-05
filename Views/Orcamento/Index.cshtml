@@ -1,0 +1,41 @@
+﻿@using System.Data
+@using System.Linq
+@{
+    ViewData["Title"] = "Home Page";
+    // Layout = null;
+}
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidraçaria do Marcinho</title>
+</head>
+
+
+<link rel="stylesheet" href="~/css/reset.css">
+<link rel="stylesheet" href="~/css/style.css">
+
+
+<body>
+
+    <!-- barra superior     -->
+    <div class="borda_superior">
+        <a class="style-botao-a" href="@Url.Action("Index", "Home")">
+            <div class="borda_superior_botao"><p class="texto_botao_borda_superior">Home</p></div>
+        </a>
+    </div>
+
+    <div class="formulario">
+        @using (@Html.BeginForm("CrudOrcamento", "Orcamentos", FormMethod.Post, new { id = "form-crud-orcamento" }))
+        {
+
+
+            <br />
+            <button type="submit" class="btn btn-primary rounded-pill px-4">Salvar</button>
+        }
+    </div>
+
+</body>
+
+</html>
