@@ -37,6 +37,7 @@
                         <th>Cor</th>
                         <th>Preço</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
 
@@ -53,6 +54,11 @@
                                     <div class="botao_tabela">Visualizar Material</div>
                                 </a>
                             </td>
+                            <td>
+                            <a class="hyperlink_tabela" href="@Url.Action("DeleteMaterial", "Materiais", new { id = material.Id })">
+                                    <div class="botao_tabela">Remover</div>
+                                </a>
+                            </td>
                         </tr>
                     }
 
@@ -61,6 +67,9 @@
 
             </table>
 
+            <a class="hyperlink_tabela" href="@Url.Action("EditarMaterial", "Materiais")">
+                <div class="botao_tabela">Adicionar Material</div>
+            </a>
         </div>
 
 

@@ -22,7 +22,7 @@
             @Html.LabelFor(model => model.Id, htmlAttributes: new { @class = "id-material texto-form" })
 
             <br />
-            @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "id-material-input input-box texto-form" } })
+            @Html.TextBoxFor(model => model.Id, new { @class = "id-material-input input-box texto-form", @readonly = "readonly" })
             <br />
 
             @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "nome-material texto-form" })

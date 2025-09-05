@@ -67,7 +67,6 @@ namespace VidracariaDoMarcinho.Controllers
             else
                 return Json(new { success = false, message = "O cliente não foi deletado!" });
 
-            _context.SaveChanges();
         }
 
     }
