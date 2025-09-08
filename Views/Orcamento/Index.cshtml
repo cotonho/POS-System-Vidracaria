@@ -1,9 +1,19 @@
 ﻿@using System.Data
 @using System.Linq
+@model List<VidracariaDoMarcinho.Models.Orcamento>
 @{
-    ViewData["Title"] = "Home Page";
-    // Layout = null;
+    var clientes = ViewBag.Clientes as List<Cliente>;
+    var materiais = ViewBag.Materiais as List<Material>;
 }
+
+
+<label>Cliente</label>
+<select id="clienteCPF">
+    @foreach (var c in ViewBag.Clientes as List<Cliente>)
+    {
+        <option value="@c.CPF">@c.Nome (@c.CPF)</option>
+    }
+</select>
 
 <html>
 <head>
@@ -27,14 +37,67 @@
     </div>
 
     <div class="formulario">
-        @using (@Html.BeginForm("CrudOrcamento", "Orcamentos", FormMethod.Post, new { id = "form-crud-orcamento" }))
-        {
 
+        
+
+            <div>
+                <div class="tabela_selecao">
+                    <div class="tabela_selecao_materiais">
+                        <table id="tabelaMateriais" class="display table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Cor</th>
+                                    <th>Preço</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var m in ViewBag.Material as List<Material>)
+                                {
+                                    <tr data-id="@m.Id" data-nome="@m.Nome" data-cor="@m.Cor" data-preco="@m.Preco">
+                                        <td>@m.Nome</td>
+                                        <td>@m.Cor</td>
+                                        <td>@m.Preco</td>
+                                        <td><button class="btn-add">Adicionar</button></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="tabela_selecao_materiais">
+
+                        <table id="tabelaSelecionados" class="display table">
+
+                            <thead><tr><th>Nome</th><th>Cor</th><th>Preço</th><th>Qtde</th><th></th></tr></thead>
+
+                            <tbody>
+                                <!-- Linhas serão adicionadas aqui -->
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+            <br />
+            <p>Total: <span id="valorTotal">0.00</span></p>
 
             <br />
-            <button type="submit" class="btn btn-primary rounded-pill px-4">Salvar</button>
-        }
+            <button id="btnSalvar" data-save-url="@Url.Action("Salvar", "Orcamento")">Salvar Orçamento</button>
+        
     </div>
+
+
+
+    @section Scripts {
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+    }
 
 </body>
 

@@ -168,3 +168,14 @@
 .endereco {
     display: inline-flex;
 }
+
+
+
+.tabela_selecao {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tabela_selecao_materiais {
+    width: 49%;
+}
