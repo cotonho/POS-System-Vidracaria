@@ -5,6 +5,7 @@ using VidracariaDoMarcinho.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using Newtonsoft.Json;
 
 namespace VidracariaDoMarcinho.Controllers
 {
@@ -23,19 +24,33 @@ namespace VidracariaDoMarcinho.Controllers
 
             ViewBag.Clientes = await _context.Clientes.ToListAsync();
             ViewBag.Material = await _context.Materiais.ToListAsync();
+
+            //opção pra ler os valores no js
+            ViewBag.MateriaisJson = JsonConvert.SerializeObject(await _context.Materiais.ToListAsync());
+
             return View(orcamentos);
         }
 
         public async Task<IActionResult> CrudOrcamento()
         {
             ViewBag.Material = await _context.Materiais.ToListAsync();
+            
+            
+            //opção pra ler os valores no js
+            ViewBag.MateriaisJson = JsonConvert.SerializeObject(await _context.Materiais.ToListAsync());
+            
             return View();
         }
 
         public IActionResult Create()
         {
+            
             ViewBag.Clientes = _context.Clientes.ToList();
             ViewBag.Materiais = _context.Materiais.ToList();
+
+            var materiais = _context.Materiais.ToList();
+            ViewBag.MateriaisJson = JsonConvert.SerializeObject(materiais);
+            
             return View();
         }
 

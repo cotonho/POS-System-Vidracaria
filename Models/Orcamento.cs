@@ -11,19 +11,10 @@ namespace VidracariaDoMarcinho.Models
 
         public DateTime Data { get; set; } = DateTime.Now;
 
-        // Dimensões
-        public decimal Altura { get; set; }
-        public decimal Largura { get; set; }
-
-        // Especificações
-        public string TipoVidro { get; set; }
-        public string CorVidro { get; set; }
-        public decimal Espessura { get; set; }
-
         // Status
         public string Status { get; set; } = "Aberto";
-        public string LocalInstalacao { get; set; }
-        public string Observacoes { get; set; }
+        public string? LocalInstalacao { get; set; }
+        public string? Observacoes { get; set; }
 
         public virtual Cliente Cliente { get; set; }
         public virtual ICollection<OrcamentoItem> Itens { get; set; }
@@ -45,16 +36,8 @@ namespace VidracariaDoMarcinho.Models
     {
         public string ClienteCPF { get; set; }
 
-        public decimal Altura { get; set; }
-        public decimal Largura { get; set; }
-
-        // Especificações
-        public string TipoVidro { get; set; }
-        public string CorVidro { get; set; }
-        public decimal Espessura { get; set; }
-
-        public string LocalInstalacao { get; set; }
-        public string Observacoes { get; set; }
+        public string? LocalInstalacao { get; set; }
+        public string? Observacoes { get; set; }
 
         public List<OrcamentoItemDto> Itens { get; set; }
     }

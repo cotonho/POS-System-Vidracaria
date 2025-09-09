@@ -157,6 +157,9 @@
     border: none;
     border-bottom: 1px solid black;
 
+    max-width:200px;
+    overflow:scroll;
+
 }
 
 .texto-form {
@@ -174,6 +177,9 @@
 .tabela_selecao {
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px solid black;
+
+    margin-bottom: 20px;
 }
 
 .tabela_selecao_materiais {

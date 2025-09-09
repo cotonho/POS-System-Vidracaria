@@ -37,58 +37,137 @@
     </div>
 
     <div class="formulario">
+        <div>
+            <div class="tabela_selecao">
+                <div>
+                    <select id="VidroId" onchange="atualizarCampos()">
+                        @foreach (var m in ViewBag.Material as List<Material>)
+                        {
+                            <option value="@m.Id"
+                                    data-tipo="@m.Nome"
+                                    data-cor="@m.Cor"
+                                    data-preco="@m.Preco">
+                                @m.Nome (@m.Cor)
+                            </option>
+                        }
+                    </select>
 
-        
+                    <br />
 
-            <div>
-                <div class="tabela_selecao">
-                    <div class="tabela_selecao_materiais">
-                        <table id="tabelaMateriais" class="display table">
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>Cor</th>
-                                    <th>Preço</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
+                    <label class="texto-form">Altura</label>
+                    <input id="altura-input" class="input-box texto-form" type="number" name="altura-input" min="0.1" step="0.1" onchange="atualizarPrecoVidro()" />
 
-                            <tbody>
-                                @foreach (var m in ViewBag.Material as List<Material>)
-                                {
-                                    <tr data-id="@m.Id" data-nome="@m.Nome" data-cor="@m.Cor" data-preco="@m.Preco">
-                                        <td>@m.Nome</td>
-                                        <td>@m.Cor</td>
-                                        <td>@m.Preco</td>
-                                        <td><button class="btn-add">Adicionar</button></td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
+                    <br />
 
-                    <div class="tabela_selecao_materiais">
+                    <label class="texto-form">Largura</label>
+                    <input id="largura-input" class="input-box texto-form" type="number" name="largura-input" min="0.1" step="0.1" onchange="atualizarPrecoVidro()" />
 
-                        <table id="tabelaSelecionados" class="display table">
+                    <br />
 
-                            <thead><tr><th>Nome</th><th>Cor</th><th>Preço</th><th>Qtde</th><th></th></tr></thead>
-
-                            <tbody>
-                                <!-- Linhas serão adicionadas aqui -->
-                            </tbody>
-
-                        </table>
-
-                    </div>
+                    <label class="texto-form">Observações</label>
+                    <input id="obs-input" class="input-box texto-form" type="text" name="obs-input" />
 
                 </div>
-            </div>
-            <br />
-            <p>Total: <span id="valorTotal">0.00</span></p>
 
-            <br />
-            <button id="btnSalvar" data-save-url="@Url.Action("Salvar", "Orcamento")">Salvar Orçamento</button>
-        
+                <div>
+
+                    <label class="texto-form">Tipo do Vidro</label>
+                    <input id="tipo-input" class="input-box texto-form" type="text" name="tipo-input" readonly />
+
+                    <br />
+
+                    <label class="texto-form">Cor</label>
+                    <input id="cor-vidro-input" class="input-box texto-form" type="text" name="cor-vidro-input" readonly />
+
+                    <br />
+
+                    <label class="preco-form">Preço</label>
+                    <input id="preco-input" class="input-box texto-form" type="text" name="preco-input" readonly/>
+
+                </div>
+
+
+                <div>
+                    <div class="tabela_selecao">
+
+
+                        <div class="tabela_vidros">
+
+                            <table id="tabelaVidrosAdicionados" class="display table">
+
+                                <thead>
+                                    <tr>
+                                        <th>Altura</th>
+                                        <th>Largura</th>
+                                        <th>TipoVidro</th>
+                                        <th>Cor</th>
+                                        <th>Observações</th>
+                                        <th>Quantidade</th>
+                                        <th>Preco</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <td><button class="btn-add-vidro">Adicionar</button></td>
+        </div>
+
+        <div>
+            <div class="tabela_selecao">
+                <div class="tabela_selecao_materiais">
+                    <table id="tabelaMateriais" class="display table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Cor</th>
+                                <th>Preço</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var m in ViewBag.Material as List<Material>)
+                            {
+                                <tr data-id="@m.Id" data-nome="@m.Nome" data-cor="@m.Cor" data-preco="@m.Preco">
+                                    <td>@m.Nome</td>
+                                    <td>@m.Cor</td>
+                                    <td>@m.Preco</td>
+                                    <td><button class="btn-add">Adicionar</button></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="tabela_selecao_materiais">
+
+                    <table id="tabelaSelecionados" class="display table">
+
+                        <thead><tr><th>Nome</th><th>Cor</th><th>Preço</th><th>Qtde</th><th></th></tr></thead>
+
+                        <tbody>
+                            <!-- Linhas serão adicionadas aqui -->
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+        <br />
+        <p>Total: <span id="valorTotal">0.00</span></p>
+
+        <br />
+        <button id="btnSalvar" data-save-url="@Url.Action("Salvar", "Orcamento")">Salvar Orçamento</button>
+
     </div>
 
 
