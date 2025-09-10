@@ -39,8 +39,8 @@
     <div class="formulario">
         <div>
             <div class="tabela_selecao">
-                <div>
-                    <select id="VidroId" onchange="atualizarCampos()">
+                <div class="campos-vidros">
+                    <select id="VidroId" onchange="atualizarCampos(), atualizarPrecoVidro()">
                         @foreach (var m in ViewBag.Material as List<Material>)
                         {
                             <option value="@m.Id"
@@ -69,7 +69,7 @@
 
                 </div>
 
-                <div>
+                <div class="campos-vidros">
 
                     <label class="texto-form">Tipo do Vidro</label>
                     <input id="tipo-input" class="input-box texto-form" type="text" name="tipo-input" readonly />
@@ -81,13 +81,17 @@
 
                     <br />
 
-                    <label class="preco-form">Preço</label>
-                    <input id="preco-input" class="input-box texto-form" type="text" name="preco-input" readonly/>
+                    <label class="texto-form">Preço</label>
+                    <input id="preco-input" class="input-box texto-form" type="text" name="preco-input" readonly />
+                     
+                    <br />    
 
+                    <button class="btn-add-vidro">Adicionar</button>
                 </div>
 
+                
 
-                <div>
+                <div class="campos-vidros-tabela">
                     <div class="tabela_selecao">
 
 
@@ -104,6 +108,7 @@
                                         <th>Observações</th>
                                         <th>Quantidade</th>
                                         <th>Preco</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
 
@@ -115,8 +120,8 @@
                         </div>
                     </div>
                 </div>
+                
             </div>
-            <td><button class="btn-add-vidro">Adicionar</button></td>
         </div>
 
         <div>

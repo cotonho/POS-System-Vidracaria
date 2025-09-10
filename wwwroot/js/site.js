@@ -89,10 +89,11 @@ $(document).ready(function () {
         e.preventDefault(); // Previne o comportamento padrão do botão
 
         let row = $(this).closest("tr");
-        let id = row.data("id");
+        let materialId = $("#VidroId").val(); // pega o valor do select
+
 
         // se já existe, só aumenta quantidade
-        let existing = $("#tabelaVidrosAdicionados tbody tr[data-id='" + id + "']");
+        let existing = $("#tabelaVidrosAdicionados tbody tr[data-id='" + materialId + "']");
         if (existing.length) {
             let q = parseInt(existing.find(".qtde").val() || 0) + 1;
             existing.find(".qtde").val(q);
@@ -107,26 +108,29 @@ $(document).ready(function () {
             Observacoes = document.getElementById("obs-input").value,
             Preco = document.getElementById("preco-input").value;
 
-        let novaLinha = $("<tr>")
-            .attr("data-id", id)
+        let novaLinhaVidros = $("<tr>")
+            .attr("data-id", materialId)
             .append($("<td>").text(Altura))
             .append($("<td>").text(Largura))
             .append($("<td>").text(TipoVidro))
             .append($("<td>").text(Cor))
-            .append($("<td>").text(Observações))
-            .append($("<td>").addClass("preco-item").text(Preco))
+            .append($("<td>").text(Observacoes))
+            
             .append($("<td>").append($("<input>", {
                 type: "number",
                 value: 1,
                 min: 1,
                 class: "qtde"
             })))
+
+            .append($("<td>").addClass("preco-item").text(Preco))
+
             .append($("<td>").append($("<button>", {
                 type: "button",
                 class: "btn-remover-vidro"
             }).text("Remover")));
 
-        $("#tabelaVidrosAdicionados tbody").append(novaLinha);
+        $("#tabelaVidrosAdicionados tbody").append(novaLinhaVidros);
         recalculaTotal();
     });
 
@@ -163,6 +167,7 @@ $(document).ready(function () {
         let saveUrl = $(this).data("save-url");
         let clienteCPF = $("#clienteCPF").val();
         let itens = [];
+        let vidros = [];
 
         // Validações antes de enviar
         if (!clienteCPF) {
@@ -177,10 +182,9 @@ $(document).ready(function () {
             let precoUnitario = parseFloat(precoText.replace(",", "."));
 
             if (!materialId) {
-                return true; // continue para o próximo item
+                return true; // continue
             }
 
-            // Só adiciona se todos os dados estiverem válidos
             if (materialId && quantidade > 0 && !isNaN(precoUnitario)) {
                 itens.push({
                     MaterialId: materialId,
@@ -190,14 +194,42 @@ $(document).ready(function () {
             }
         });
 
-        if (itens.length === 0) {
-            alert("Adicione pelo menos um item ao orçamento!");
-            return;
-        }
+        $("#tabelaVidrosAdicionados tbody tr").each(function () {
+            let altura = parseFloat($(this).find("td:eq(0)").text().trim()) || 0;
+            let largura = parseFloat($(this).find("td:eq(1)").text().trim()) || 0;
+            let tipoVidro = $(this).find("td:eq(2)").text().trim();
+            let cor = $(this).find("td:eq(3)").text().trim();
+            let observacoes = $(this).find("td:eq(4)").text().trim();
+            let quantidade = parseInt($(this).find(".qtde").val() || 0);
+            let precoText = $(this).find(".preco-item").text().trim();
+            let preco = parseFloat(precoText.replace(",", ".")) || 0;
+
+            // pega o id do material associado ao vidro (você guardou no tr com data-id)
+            let materialId = $(this).data("id");
+
+            if (materialId && quantidade > 0 && preco > 0) {
+                vidros.push({
+                    MaterialId: materialId,
+                    Altura: altura,
+                    Largura: largura,
+                    TipoVidro: tipoVidro,
+                    Cor: cor,
+                    Observacoes: observacoes,
+                    Quantidade: quantidade,
+                    Preco: preco
+                });
+            }
+        });
+
+        if (itens.length === 0 && vidros.length === 0) {
+        alert("Adicione pelo menos um item ou vidro ao orçamento!");
+        return;
+    }
 
         let dto = {
             ClienteCPF: clienteCPF,
-            Itens: itens
+            Itens: itens,
+            Vidros: vidros 
         };
 
         console.log("Enviando dados:", dto); // Para debug
@@ -227,6 +259,12 @@ $(document).ready(function () {
 function recalculaTotal() {
     let total = 0;
     $("#tabelaSelecionados tbody tr").each(function () {
+        let precoText = $(this).find(".preco-item").text().trim();
+        let preco = parseFloat(precoText.replace(",", ".")) || 0;
+        let qtde = parseInt($(this).find(".qtde").val() || 0);
+        total += preco * qtde;
+    });
+    $("#tabelaVidrosAdicionados tbody tr").each(function () {
         let precoText = $(this).find(".preco-item").text().trim();
         let preco = parseFloat(precoText.replace(",", ".")) || 0;
         let qtde = parseInt($(this).find(".qtde").val() || 0);

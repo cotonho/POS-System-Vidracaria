@@ -18,6 +18,8 @@ namespace VidracariaDoMarcinho.Models
 
         public virtual Cliente Cliente { get; set; }
         public virtual ICollection<OrcamentoItem> Itens { get; set; }
+        public virtual ICollection<Vidro> Vidros { get; set; }
+
     }
 
     public class OrcamentoItem
@@ -35,12 +37,14 @@ namespace VidracariaDoMarcinho.Models
     public class OrcamentoDto
     {
         public string ClienteCPF { get; set; }
-
         public string? LocalInstalacao { get; set; }
         public string? Observacoes { get; set; }
 
         public List<OrcamentoItemDto> Itens { get; set; }
+        public List<VidroDto> Vidros { get; set; }
+
     }
+
 
     public class OrcamentoItemDto
     {
@@ -48,4 +52,34 @@ namespace VidracariaDoMarcinho.Models
         public int Quantidade { get; set; }
         public decimal PrecoUnitario { get; set; }
     }
+
+    public class Vidro
+    {
+        public int Id { get; set; }
+        public int OrcamentoId { get; set; }
+        public int MaterialId { get; set; }
+        public decimal Altura { get; set; }
+        public decimal Largura { get; set; }
+        public string TipoVidro { get; set; }
+        public string Cor { get; set; }
+        public string Observacoes { get; set; }
+        public int Quantidade { get; set; }
+        public decimal Preco { get; set; }
+
+        public virtual Orcamento Orcamento { get; set; }
+        public virtual Material Material { get; set; }
+    }
+
+    public class VidroDto
+    {
+        public int MaterialId { get; set; }
+        public decimal Altura { get; set; }
+        public decimal Largura { get; set; }
+        public string TipoVidro { get; set; }
+        public string Cor { get; set; }
+        public string Observacoes { get; set; }
+        public int Quantidade { get; set; }
+        public decimal Preco { get; set; }
+    }
+
 }

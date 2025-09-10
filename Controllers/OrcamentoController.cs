@@ -34,23 +34,23 @@ namespace VidracariaDoMarcinho.Controllers
         public async Task<IActionResult> CrudOrcamento()
         {
             ViewBag.Material = await _context.Materiais.ToListAsync();
-            
-            
+
+
             //opção pra ler os valores no js
             ViewBag.MateriaisJson = JsonConvert.SerializeObject(await _context.Materiais.ToListAsync());
-            
+
             return View();
         }
 
         public IActionResult Create()
         {
-            
+
             ViewBag.Clientes = _context.Clientes.ToList();
             ViewBag.Materiais = _context.Materiais.ToList();
 
             var materiais = _context.Materiais.ToList();
             ViewBag.MateriaisJson = JsonConvert.SerializeObject(materiais);
-            
+
             return View();
         }
 
@@ -61,8 +61,12 @@ namespace VidracariaDoMarcinho.Controllers
             {
                 Console.WriteLine($"Recebendo orçamento para CPF: {dto?.ClienteCPF}");
 
-                if (dto == null || dto.Itens == null || !dto.Itens.Any())
-                    return Json(new { success = false, message = "Nenhum item enviado." });
+                if (dto == null ||
+                    ((dto.Itens == null || !dto.Itens.Any()) &&
+                    (dto.Vidros == null || !dto.Vidros.Any())))
+                {
+                    return Json(new { success = false, message = "Nenhum item ou vidro enviado." });
+                }
 
                 // VERIFICAÇÃO DO CLIENTE
                 var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.CPF == dto.ClienteCPF);
@@ -98,7 +102,29 @@ namespace VidracariaDoMarcinho.Controllers
                 };
 
                 _context.Orcamentos.Add(orc);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(); // salva o orçamento e gera o ID
+
+                // 🔹 Agora salvar os vidros
+                if (dto.Vidros != null && dto.Vidros.Any())
+                {
+                    foreach (var v in dto.Vidros)
+                    {
+                        var vidro = new Vidro
+                        {
+                            OrcamentoId = orc.Id,   // vínculo
+                            MaterialId = v.MaterialId,
+                            Altura = v.Altura,
+                            Largura = v.Largura,
+                            TipoVidro = v.TipoVidro,
+                            Cor = v.Cor,
+                            Observacoes = v.Observacoes,
+                            Quantidade = v.Quantidade,
+                            Preco = v.Preco
+                        };
+                        _context.Vidros.Add(vidro);
+                    }
+                    await _context.SaveChangesAsync();
+                }
 
                 Console.WriteLine($"Orçamento salvo com ID: {orc.Id}");
                 return Json(new { success = true, id = orc.Id });
