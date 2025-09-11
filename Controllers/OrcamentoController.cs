@@ -93,6 +93,16 @@ namespace VidracariaDoMarcinho.Controllers
                 {
                     ClienteCPF = dto.ClienteCPF,
                     Data = DateTime.Now,
+                    LocalInstalacao = dto.LocalInstalacao,
+                    Observacoes = dto.Observacoes,
+                    Custo = dto.Custo,
+                    Total = dto.Total,
+                    Gasolina = dto.Gasolina,
+                    Silicone = dto.Silicone,
+                    Box = dto.Box,
+                    ValorParcelas = dto.ValorParcelas,
+                    Parcelas = dto.Parcelas,
+                    ParcelasPagas = dto.ParcelasPagas,
                     Itens = dto.Itens.Select(i => new OrcamentoItem
                     {
                         MaterialId = i.MaterialId,
@@ -100,6 +110,7 @@ namespace VidracariaDoMarcinho.Controllers
                         PrecoUnitario = i.PrecoUnitario
                     }).ToList()
                 };
+
 
                 _context.Orcamentos.Add(orc);
                 await _context.SaveChangesAsync(); // salva o orçamento e gera o ID

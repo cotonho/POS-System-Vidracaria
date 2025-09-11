@@ -137,8 +137,9 @@
 
 .formulario {
     padding: 2%;
-    margin-left: 10vw;
-    margin-right: 10vw;
+    justify-self:center;
+/*    margin-left: 10vw;
+    margin-right: 10vw;*/
     width: 80vw;
     box-shadow: -2px 0 5px rgba(0,0,0,0.3);
     border-radius: 8px;
@@ -176,9 +177,9 @@
 
 .tabela_selecao {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     border-bottom: 1px solid black;
-
+    max-width: 100%;
     margin-bottom: 20px;
 }
 
@@ -196,4 +197,12 @@
 }
 
 .campos-vidros-tabela {
+}
+
+.tabela_selecao_vidros {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+    max-width: 100%;
+    margin-bottom: 20px;
 }

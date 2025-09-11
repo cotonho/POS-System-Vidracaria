@@ -15,6 +15,8 @@ function atualizarCampos() {
     document.getElementById("cor-vidro-input").value = cor;
 }
 
+
+
 // já preencher ao carregar a página (primeiro item)
 window.onload = atualizarCampos;
 
@@ -43,7 +45,7 @@ $(document).ready(function () {
     // Inicializa DataTables
     $('.table').DataTable();
 
-    // adicionar item (delegação)
+    // adicionar item
     $("#tabelaMateriais").on("click", ".btn-add", function (e) {
         e.preventDefault(); // Previne o comportamento padrão do botão
 
@@ -115,7 +117,7 @@ $(document).ready(function () {
             .append($("<td>").text(TipoVidro))
             .append($("<td>").text(Cor))
             .append($("<td>").text(Observacoes))
-            
+
             .append($("<td>").append($("<input>", {
                 type: "number",
                 value: 1,
@@ -222,17 +224,32 @@ $(document).ready(function () {
         });
 
         if (itens.length === 0 && vidros.length === 0) {
-        alert("Adicione pelo menos um item ou vidro ao orçamento!");
-        return;
-    }
+            alert("Adicione pelo menos um item ou vidro ao orçamento!");
+            return;
+        }
 
         let dto = {
             ClienteCPF: clienteCPF,
             Itens: itens,
-            Vidros: vidros 
+            Vidros: vidros,
+
+            LocalInstalacao: $("#instalacao-input").val(),
+            Observacoes: $("#obs-orcamento-input").val(),
+
+            Custo: parseFloat($("#valorTotal").text()) || 0,
+            Total: parseFloat($("#valor-total-pct").text())|| 0,
+            Gasolina: parseFloat($("#gasolina-input").val()) || 0,
+            Silicone: parseFloat($("#silicone-input").val()) || 0,
+            Box: parseFloat($("#box-input").val()) || 0,
+            ValorParcelas: parseFloat($("#valor-total-parcela").text()) || 0,
+            Parcelas: parseInt($("#parcelas-input").val()) || 0,
+            ParcelasPagas: 0
         };
 
+
         console.log("Enviando dados:", dto); // Para debug
+
+        
 
         $.ajax({
             type: "POST",
@@ -257,20 +274,43 @@ $(document).ready(function () {
 });
 
 function recalculaTotal() {
-    let total = 0;
-    $("#tabelaSelecionados tbody tr").each(function () {
-        let precoText = $(this).find(".preco-item").text().trim();
-        let preco = parseFloat(precoText.replace(",", ".")) || 0;
-        let qtde = parseInt($(this).find(".qtde").val() || 0);
-        total += preco * qtde;
-    });
+
+    let total = 0,
+        total30pct = 0,
+        parcelas = document.getElementById("parcelas-input").value,
+        precoParcelas = 0;
+
     $("#tabelaVidrosAdicionados tbody tr").each(function () {
         let precoText = $(this).find(".preco-item").text().trim();
         let preco = parseFloat(precoText.replace(",", ".")) || 0;
         let qtde = parseInt($(this).find(".qtde").val() || 0);
         total += preco * qtde;
     });
+
+    total += parseFloat(document.getElementById("box-input").value) || 0;
+    total += parseFloat(document.getElementById("silicone-input").value) || 0;
+    total += parseFloat(document.getElementById("gasolina-input").value) || 0;
+
+    total30pct = total * 1.3;
+
+    if (parcelas > 1) {
+        precoParcelas = (total30pct * 1.1) / parcelas;
+    } else {
+        precoParcelas = total30pct / parcelas;
+    }
+
+
+    $("#tabelaSelecionados tbody tr").each(function () {
+        let precoText = $(this).find(".preco-item").text().trim();
+        let preco = parseFloat(precoText.replace(",", ".")) || 0;
+        let qtde = parseInt($(this).find(".qtde").val() || 0);
+        total += preco * qtde;
+        total30pct += preco * qtde;
+    });
+
     $("#valorTotal").text(total.toFixed(2));
+    $("#valor-total-pct").text(total30pct.toFixed(2));
+    $("#valor-total-parcela").text(precoParcelas.toFixed(2));
 }
 
 

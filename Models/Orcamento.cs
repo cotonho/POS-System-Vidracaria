@@ -16,6 +16,16 @@ namespace VidracariaDoMarcinho.Models
         public string? LocalInstalacao { get; set; }
         public string? Observacoes { get; set; }
 
+        public decimal Custo { get; set; }
+        public decimal Total { get; set; }
+        public decimal Gasolina { get; set; }
+        public decimal Silicone { get; set; }
+        public decimal Box { get; set; }
+        public decimal ValorParcelas { get; set; }
+        public int Parcelas { get; set; }
+        public int ParcelasPagas { get; set; }
+
+
         public virtual Cliente Cliente { get; set; }
         public virtual ICollection<OrcamentoItem> Itens { get; set; }
         public virtual ICollection<Vidro> Vidros { get; set; }
@@ -39,6 +49,15 @@ namespace VidracariaDoMarcinho.Models
         public string ClienteCPF { get; set; }
         public string? LocalInstalacao { get; set; }
         public string? Observacoes { get; set; }
+
+        public decimal Custo { get; set; }
+        public decimal Total { get; set; }
+        public decimal Gasolina { get; set; }
+        public decimal Silicone { get; set; }
+        public decimal Box { get; set; }
+        public decimal ValorParcelas { get; set; }
+        public int Parcelas { get; set; }
+        public int ParcelasPagas { get; set; }
 
         public List<OrcamentoItemDto> Itens { get; set; }
         public List<VidroDto> Vidros { get; set; }
