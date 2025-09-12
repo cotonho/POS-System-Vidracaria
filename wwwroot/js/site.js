@@ -293,12 +293,6 @@ function recalculaTotal() {
 
     total30pct = total * 1.3;
 
-    if (parcelas > 1) {
-        precoParcelas = (total30pct * 1.1) / parcelas;
-    } else {
-        precoParcelas = total30pct / parcelas;
-    }
-
 
     $("#tabelaSelecionados tbody tr").each(function () {
         let precoText = $(this).find(".preco-item").text().trim();
@@ -307,6 +301,12 @@ function recalculaTotal() {
         total += preco * qtde;
         total30pct += preco * qtde;
     });
+
+    if (parcelas > 1) {
+        precoParcelas = (total30pct * 1.1) / parcelas;
+    } else {
+        precoParcelas = total30pct;
+    }
 
     $("#valorTotal").text(total.toFixed(2));
     $("#valor-total-pct").text(total30pct.toFixed(2));

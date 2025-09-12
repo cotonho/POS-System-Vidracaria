@@ -1,7 +1,7 @@
 ﻿@using System.Data
 @using System.Linq
 @* carrega os dados dos clientes *@
-@model List<Cliente>
+@model List<Orcamento>
 @{
     ViewData["Title"] = "Home Page";
     // Layout = null;
@@ -61,34 +61,60 @@
 
     <div class="painel_clientes">
 
-        <table id="tabelaClientes" class="display table">
+        <table id="tabelaPedidos" class="display table">
             <thead>
                 <tr>
+                    <th>Id</th>
                     <th>Nome</th>
                     <th>CPF</th>
                     <th>Telefone</th>
+                    <th>Data</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Parelas</th>
+                    <th>Parcelas Pagas</th>
+                    <th>Valor das Parcelas</th>
                     <th></th>
                     <th></th>
                 </tr>
             </thead>
 
             <tbody>
-                @foreach (Cliente cliente in Model)
+                @foreach (var p in Model)
                 {
                     <tr>
-                        <td>@cliente.Nome</td>
-                        <td>@cliente.CPF</td>
-                        <td>@cliente.Telefone</td>
+                        <td>@p.Id</td>
+                        <td>@p.Cliente?.Nome</td>
+                        <td>@p.ClienteCPF</td>
+                        <td>@p.Cliente?.Telefone</td>
+
                         <td>
-                            <a class="hyperlink_tabela" href="@Url.Action("VisualizarCliente", "Clientes", new { cpf = @cliente.CPF })">
+                            @p.Data.ToString("dd/MM/yyyy HH:mm")
+                        </td>
+
+                        <td>@p.Status</td>
+
+                        <td>@p.Total</td>
+
+                        <td>@p.Parcelas</td>
+
+                        <td>@p.ParcelasPagas</td>
+
+                        <td>@p.ValorParcelas</td>
+
+                        <td>
+                            <a class="hyperlink_tabela" href="@Url.Action("VisualizaPedido", "Pedidos", new { id = p.Id})">
+                                <div class="botao_tabela">Visualizar Pedido</div>
+                            </a>
+                        </td>
+
+                        <td>
+                            <a class="hyperlink_tabela" href="@Url.Action("VisualizarCliente", "Clientes", new { cpf = p.Cliente?.CPF })">
                                 <div class="botao_tabela">Visualizar Cliente</div>
                             </a>
                         </td>
-                        <td>
-                            <a class="hyperlink_tabela" href="@Url.Action("DeleteUsuario", "Clientes", new { cpf = cliente.CPF })">
-                                <div class="botao_tabela">Remover</div>
-                            </a>
-                        </td>
+                        
+
                     </tr>
                 }
 
@@ -96,10 +122,6 @@
             </tbody>
 
         </table>
-
-        <a class="hyperlink_tabela" href="@Url.Action("VisualizarCliente", "Clientes")">
-            <div class="botao_tabela">Adicionar Cliente</div>
-        </a>
 
     </div>
 

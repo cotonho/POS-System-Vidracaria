@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using VidracariaDoMarcinho.Data;
 using VidracariaDoMarcinho.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace VidracariaDoMarcinho.Controllers
 {
@@ -13,15 +16,39 @@ namespace VidracariaDoMarcinho.Controllers
             _context = context;
         }
 
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var clientes = _context.Clientes.ToList();
-            return View(clientes); // View que conterá o DataTable
+            var orcamentos = await _context.Orcamentos
+                .Include(o => o.Cliente)
+                .Include(o => o.Itens)
+                .ThenInclude(i => i.Material)
+                .ToListAsync();
+
+            ViewBag.Clientes = await _context.Clientes.ToListAsync();
+            ViewBag.Material = await _context.Materiais.ToListAsync();
+
+            //opção pra ler os valores no js
+            ViewBag.MateriaisJson = JsonConvert.SerializeObject(await _context.Materiais.ToListAsync());
+
+            return View(orcamentos);
         }
+
         public ActionResult CrudCliente(string? cpf)
         {
             var cliente = _context.Clientes.FirstOrDefault(cliente => cliente.CPF == cpf);
             return View(cliente); // View que conterá o DataTable
+        }
+
+        public ActionResult VisualizaPedido(int id)
+        {
+            var pedido = _context.Orcamentos
+                .Include(o => o.Cliente) // <-- carrega os dados do cliente
+                .FirstOrDefault(p => p.Id == id);
+
+            if (pedido == null)
+                return NotFound();
+
+            return View(pedido);
         }
 
         public ActionResult VisualizarCliente(string cpf)
@@ -51,22 +78,6 @@ namespace VidracariaDoMarcinho.Controllers
             _context.SaveChanges();
             return Json(new { success = true, message = "Cliente salvo com sucesso!" });
 
-        }
-
-        //lembrar de adicionar o Sweetalert no fim do projeto para deixar o site mais responsivo
-        public JsonResult DeleteUsuario(Cliente cliente)
-        {
-            var clienteParaApagar = _context.Clientes?.FirstOrDefault(c => c.CPF == cliente.CPF);
-            if (clienteParaApagar != null)
-            {
-                _context.Clientes.Remove(clienteParaApagar);
-                _context.SaveChanges();
-                return Json(new { success = true, message = "Cliente deletado com sucesso!" });
-            }
-            else
-                return Json(new { success = false, message = "O cliente não foi deletado!" });
-
-            _context.SaveChanges();
         }
     }
 }

@@ -1,0 +1,33 @@
+﻿@model VidracariaDoMarcinho.Models.Orcamento
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidraçaria do Marcinho</title>
+    <link rel="stylesheet" href="~/css/reset.css">
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+    <!-- barra superior -->
+    <div class="borda_superior">
+        <a class="style-botao-a" href="@Url.Action("Index", "Home")">
+            <div class="borda_superior_botao">
+                <p class="texto_botao_borda_superior">Home</p>
+            </div>
+        </a>
+    </div>
+
+    <h2>Detalhes do Pedido</h2>
+
+    <p><strong>Id:</strong> @Model.Id</p>
+    <p><strong>Cliente:</strong> @Model.Cliente?.Nome</p>
+    <p><strong>Data:</strong> @Model.Data.ToString("dd/MM/yyyy HH:mm")</p>
+    <p><strong>Status:</strong> @Model.Status</p>
+    <p><strong>Total:</strong> @Model.Total.ToString("C")</p>
+
+    <a class="hyperlink_tabela" href="@Url.Action("Index", "Pedidos")">
+        <div class="botao_tabela">Voltar</div>
+    </a>
+</body>
+</html>
