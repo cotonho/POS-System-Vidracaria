@@ -23,7 +23,7 @@ namespace VidracariaDoMarcinho.Controllers
             var orcamentos = await _context.Orcamentos
                 .Include(o => o.Cliente)
                 .Include(o => o.Itens)
-                .ThenInclude(i => i.Material)
+                    .ThenInclude(i => i.Material)
                 .ToListAsync();
 
             ViewBag.Clientes = await _context.Clientes.ToListAsync();
@@ -45,6 +45,9 @@ namespace VidracariaDoMarcinho.Controllers
         {
             var pedido = _context.Orcamentos
                 .Include(o => o.Cliente)
+                .Include(o => o.Itens)
+                    .ThenInclude(i => i.Material)
+                .Include(o => o.Vidros)
                 .FirstOrDefault(p => p.Id == id);
 
             if (pedido == null)
@@ -59,6 +62,7 @@ namespace VidracariaDoMarcinho.Controllers
 
             return View(pedido);
         }
+
 
 
         public ActionResult VisualizarCliente(string cpf)

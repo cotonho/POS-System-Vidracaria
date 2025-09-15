@@ -24,6 +24,8 @@ namespace VidracariaDoMarcinho.Models
         public decimal ValorParcelas { get; set; }
         public int Parcelas { get; set; }
         public int ParcelasPagas { get; set; }
+        public decimal ValorPago { get; set; } = 0;
+
 
 
         public virtual Cliente Cliente { get; set; }
@@ -58,6 +60,8 @@ namespace VidracariaDoMarcinho.Models
         public decimal ValorParcelas { get; set; }
         public int Parcelas { get; set; }
         public int ParcelasPagas { get; set; }
+        public decimal ValorPago { get; set; } = 0;
+
 
         public List<OrcamentoItemDto> Itens { get; set; }
         public List<VidroDto> Vidros { get; set; }

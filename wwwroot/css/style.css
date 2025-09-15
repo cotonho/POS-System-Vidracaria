@@ -167,6 +167,8 @@
     margin-top: 1vh;
     color: dimgray;
     font-size: 1.20vw;
+    min-width: 50px;
+    min-height:20px;
 }
 
 .endereco {

@@ -4,16 +4,15 @@
 
 function atualizarCampos() {
     const select = document.getElementById("VidroId");
+    if (!select) return; // se não existe, sai da função
+
     const option = select.options[select.selectedIndex];
+    if (!option) return;
 
-    // pega os atributos do option selecionado
-    const tipo = option.getAttribute("data-tipo");
-    const cor = option.getAttribute("data-cor");
-
-    // joga nos inputs
-    document.getElementById("tipo-input").value = tipo;
-    document.getElementById("cor-vidro-input").value = cor;
+    document.getElementById("tipo-input").value = option.getAttribute("data-tipo");
+    document.getElementById("cor-vidro-input").value = option.getAttribute("data-cor");
 }
+
 
 
 
@@ -237,7 +236,7 @@ $(document).ready(function () {
             Observacoes: $("#obs-orcamento-input").val(),
 
             Custo: parseFloat($("#valorTotal").text()) || 0,
-            Total: parseFloat($("#valor-total-pct").text())|| 0,
+            Total: parseFloat($("#valor-total-pct").text()) || 0,
             Gasolina: parseFloat($("#gasolina-input").val()) || 0,
             Silicone: parseFloat($("#silicone-input").val()) || 0,
             Box: parseFloat($("#box-input").val()) || 0,
@@ -249,7 +248,7 @@ $(document).ready(function () {
 
         console.log("Enviando dados:", dto); // Para debug
 
-        
+
 
         $.ajax({
             type: "POST",
@@ -315,3 +314,15 @@ function recalculaTotal() {
 
 
 
+function calculaValorParcela() {
+    let total = document.getElementById("total-input").value,
+        parcelas = document.getElementById("parcelas-input").value,
+        parcelasPagas = document.getElementById("parcelas-pagas-input").value,
+        valorPago = document.getElementById("valor-pago-input").value || 0
+
+    let parcelasAPagar = parcelas - parcelasPagas,
+        valorAPagar = total - valorPago;
+    document.getElementById("valor-parcelas-input").value = (valorAPagar / parcelasAPagar);
+}
+
+window.onload = calculaValorParcela();
