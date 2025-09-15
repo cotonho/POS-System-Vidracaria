@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
 using VidracariaDoMarcinho.Data;
 using VidracariaDoMarcinho.Models;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace VidracariaDoMarcinho.Controllers
@@ -42,14 +44,22 @@ namespace VidracariaDoMarcinho.Controllers
         public ActionResult VisualizaPedido(int id)
         {
             var pedido = _context.Orcamentos
-                .Include(o => o.Cliente) // <-- carrega os dados do cliente
+                .Include(o => o.Cliente)
                 .FirstOrDefault(p => p.Id == id);
 
             if (pedido == null)
                 return NotFound();
 
+            ViewBag.StatusOptions = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Aberto", Value = "Aberto" },
+                new SelectListItem { Text = "Concluído", Value = "Concluído" },
+                new SelectListItem { Text = "Cancelado", Value = "Cancelado" }
+            };
+
             return View(pedido);
         }
+
 
         public ActionResult VisualizarCliente(string cpf)
         {
@@ -79,5 +89,6 @@ namespace VidracariaDoMarcinho.Controllers
             return Json(new { success = true, message = "Cliente salvo com sucesso!" });
 
         }
+
     }
 }
