@@ -17,7 +17,7 @@ function atualizarCampos() {
 
 
 // já preencher ao carregar a página (primeiro item)
-window.onload = atualizarCampos;
+
 
 function atualizarPrecoVidro() {
     const select = document.getElementById("VidroId");
@@ -36,9 +36,6 @@ function atualizarPrecoVidro() {
     // mostra no input
     document.getElementById("preco-input").value = precoFinal.toFixed(2); // 2 casas decimais
 }
-
-// já preencher ao carregar
-window.onload = atualizarCampos;
 
 $(document).ready(function () {
     // Inicializa DataTables
@@ -307,6 +304,10 @@ function recalculaTotal() {
         precoParcelas = total30pct;
     }
 
+    if (precoParcelas < 0) {
+        precoParcelas = 0;
+    }
+
     $("#valorTotal").text(total.toFixed(2));
     $("#valor-total-pct").text(total30pct.toFixed(2));
     $("#valor-total-parcela").text(precoParcelas.toFixed(2));
@@ -322,7 +323,77 @@ function calculaValorParcela() {
 
     let parcelasAPagar = parcelas - parcelasPagas,
         valorAPagar = total - valorPago;
-    document.getElementById("valor-parcelas-input").value = (valorAPagar / parcelasAPagar);
+
+    if (valorAPagar < 0) {
+        valorAPagar = 0;
+    }
+    let valor = (valorAPagar / parcelasAPagar).toFixed(2)
+    if (double.IsNaN(valor) || double.IsInfinity(valor)) {
+        valor = 0;
+    }
+    document.getElementById("valor-parcelas-input").value = valor;
 }
 
-window.onload = calculaValorParcela();
+function reduzTotal() {
+    let totalVidros = 0;
+    let totalItens = 0;
+
+    // Itera sobre todas as linhas da tabela
+    $("#tabelaItens tbody tr").each(function () {
+        const $tr = $(this);
+
+        // Quantidade (coluna 2)
+        const qtde = parseInt($tr.find("td:eq(2)").text().trim()) || 0;
+
+        // Preço (coluna 3) - remove R$, pontos e transforma vírgula em ponto
+        const precoText = $tr.find("td:eq(3)").text().trim();
+        const preco = parseFloat(precoText.replace(/[^\d,.-]/g, "").replace(",", ".")) || 0;
+
+        // Altura e Largura (colunas 4 e 5) - para identificar vidros
+        const altura = $tr.find("td:eq(4)").text().trim();
+        const largura = $tr.find("td:eq(5)").text().trim();
+
+        if (altura && largura) {
+            // É vidro
+            totalVidros += preco * qtde;
+        } else {
+            // É item
+            totalItens += preco * qtde;
+        }
+    });
+
+    // Base = total de vidros
+    let total = totalVidros;
+
+    // Soma extras: Gasolina, Silicone, Box
+    total += parseFloat(document.getElementById("Gasolina").value) || 0;
+    total += parseFloat(document.getElementById("Silicone").value) || 0;
+    total += parseFloat(document.getElementById("Box").value) || 0;
+
+    // Multiplicadores aplicam apenas em vidros + extras
+    const parcelas = parseFloat(document.getElementById("parcelas-input")?.value) || 0;
+    const parcelasPagas = parseFloat(document.getElementById("parcelas-pagas-input")?.value) || 0;
+    const faltam = parcelas - parcelasPagas;
+
+    if (faltam === 1) {
+        total *= 1.3;
+    } else {
+        total = total * 1.3 * 1.1;
+    }
+
+    // Adiciona total de itens (sem multiplicador)
+    total += totalItens;
+
+    if (total < 0) { total = 0 };
+    // Atualiza input do total
+    document.getElementById("total-input").value = total.toFixed(2);
+}
+
+
+
+window.onload = function () {
+    reduzTotal();
+    atualizarCampos();
+    calculaValorParcela();
+};
+

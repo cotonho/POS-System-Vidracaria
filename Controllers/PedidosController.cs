@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
+using System.Reflection.Metadata;
 using VidracariaDoMarcinho.Data;
 using VidracariaDoMarcinho.Models;
 
@@ -73,24 +74,70 @@ namespace VidracariaDoMarcinho.Controllers
         }
 
         //lembrar de adicionar o Sweetalert no fim do projeto para deixar o site mais responsivo
-        public JsonResult CrudUsuario(Cliente cliente)
+
+        public JsonResult CrudPedido(Orcamento orcamento)
         {
-            var clienteAlterado = _context.Clientes.FirstOrDefault(c => c.CPF == cliente.CPF);
-            if (clienteAlterado != null)
+            var pedidoAlterado = _context.Orcamentos.FirstOrDefault(c => c.Id == orcamento.Id);
+            if (pedidoAlterado != null)
             {
-                clienteAlterado.Nome = cliente.Nome;
-                clienteAlterado.Telefone = cliente.Telefone;
-                clienteAlterado.Rua = cliente.Rua;
-                clienteAlterado.Numero = cliente.Numero;
-                clienteAlterado.Cidade = cliente.Cidade;
-                clienteAlterado.Bairro = cliente.Bairro;
-                clienteAlterado.CEP = cliente.CEP;
+                pedidoAlterado.Status = orcamento.Status;
+                pedidoAlterado.LocalInstalacao = orcamento.LocalInstalacao;
+                pedidoAlterado.Observacoes = orcamento.Observacoes;
+
+                //Falta adicionar o valor do custo
+                //pedidoAlterado.Custo = 
+
+                pedidoAlterado.Total = (orcamento.Total)/100;
+                pedidoAlterado.Gasolina = orcamento.Gasolina;
+                pedidoAlterado.Silicone = orcamento.Silicone;
+                pedidoAlterado.Box = orcamento.Box;
+                pedidoAlterado.ParcelasPagas = orcamento.ParcelasPagas;
+                pedidoAlterado.ValorParcelas = orcamento.ValorParcelas;
+                pedidoAlterado.ValorPago = (orcamento.ValorPago)/100;
             }
             else
-                _context.Clientes.Add(cliente);
+                _context.Orcamentos.Add(orcamento);
 
-            _context.SaveChanges();
-            return Json(new { success = true, message = "Cliente salvo com sucesso!" });
+            try
+            {
+                _context.SaveChanges();
+                return Json(new { success = true, message = "Pedido alterado com sucesso!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+
+
+        }
+
+        public ActionResult DeleteVidro(Vidro vidro)
+        {
+            var materialParaApagar = _context.Vidros?.FirstOrDefault(c => c.Id == vidro.Id);
+            if (materialParaApagar != null)
+            {
+
+                _context.Vidros.Remove(materialParaApagar);
+                _context.SaveChanges();
+                return Json(new { success = true, message = "Vidro deletado com sucesso!" });
+            }
+            else
+                return Json(new { success = false, message = "O vidro não foi deletado!" });
+
+        }
+
+        public ActionResult DeleteItem(OrcamentoItem item)
+        {
+            var materialParaApagar = _context.OrcamentoItens?.FirstOrDefault(c => c.Id == item.Id);
+            if (materialParaApagar != null)
+            {
+
+                _context.OrcamentoItens.Remove(materialParaApagar);
+                _context.SaveChanges();
+                return Json(new { success = true, message = "Item deletado com sucesso!" });
+            }
+            else
+                return Json(new { success = false, message = "O item não foi deletado!" });
 
         }
 
