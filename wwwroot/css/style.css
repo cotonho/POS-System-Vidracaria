@@ -1,5 +1,5 @@
 ﻿body {
-    background-color: #BFBFB8;
+    background-color: #eaeaea;
     display: flexbox;
 
     margin: 0;
@@ -7,7 +7,7 @@
 }
 
 .borda_superior {
-    background-color: #4C594F;
+    background-color: #c6c6c6;
 
     height: 12vh;
     
@@ -16,17 +16,18 @@
     justify-content: left;  
 }
 
+.botao-borda-superior {
+    overflow: hidden;
+}
+
 .borda_superior_botao {
     background-color: #BFBFB8;
-
     border-radius: 6px;
-    width: 8vw;
-    height: 6vh;
-
-    text-align:center;
+    width: 8vw !important;
+    height: 8vh !important;
+    text-align: center;
     margin-left: 2vw;
     margin-right: 2vw;
-
     padding-top: 3vh;
 }
 
@@ -42,23 +43,47 @@
 
 
 .style-botao-a {
+    display: inline-block; /* ou block se quiser ocupar a linha toda */
     text-decoration: none;
-    color: black;
 }
 
 .botao {
     height: 18vh;
     width: 18vw;
-    
     background-color: #35403A;
     border: black, 1px;
     border-radius: 20px;
-    
     align-content: center;
     text-align: center;
-    overflow:hidden;
-
+    overflow: hidden;
     cursor: pointer;
+    <!-- HTML ! -->
+    <button class="button-47" role="button">Button 47</button>
+    /* CSS */
+    .button-47
+
+    align-items: center;
+    background: #dcdcdc;
+    border: 0 solid #E2E8F0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+    color: #1A202C;
+/*    display: inline-flex;*/
+    font-family: Inter, sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+
+    justify-content: center;
+    line-height: 24px;
+    overflow-wrap: break-word;
+    padding: 24px;
+    text-decoration: none;
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+
 }
 
 .text_botao {
@@ -93,13 +118,13 @@
     }
 
 .painel_clientes {
-/*    width: 86vw;*/
-/*    height: 100%;*/
-/*    padding-top: 10vh;*/
+    /*    width: 86vw;*/
+    /*    height: 100%;*/
+    /*    padding-top: 10vh;*/
     padding-left: 2vw;
     padding-right: 2vw;
-    background-color: #BFBFB8;
-/*    box-shadow: -2px 0 5px rgba(0,0,0,0.3);*/
+    background-color: #eaeaea;
+    /*    box-shadow: -2px 0 5px rgba(0,0,0,0.3);*/
     overflow-y: auto;
 }
 
@@ -126,11 +151,17 @@
 }
 
 .botao_tabela {
-    text-align: center;
+    display: flex; /* ativa o flexbox */
+    justify-content: center; /* centraliza na horizontal */
+    align-items: center ; /*centraliza na vertical */
+
     cursor: pointer;
-    width: 5vw;
-    height: 4vh;
+    width: 6vw !important;
+    height: 4vh !important;
     background-color: gray;
+    font-size: 150%;
+    border-radius: 8px; /* só pra dar acabamento */
+    font-weight: 200;
 }
 
 

@@ -23,9 +23,9 @@
 
     <!-- barra superior     -->
     <div class="borda_superior">
-            <a class="style-botao-a" href="@Url.Action("Index", "Home")">
-                <div class="borda_superior_botao"><p class="texto_botao_borda_superior">Home</p></div>
-            </a>
+        <a class="style-botao-a" href="@Url.Action("Index", "Home")">
+            <div class="botao borda_superior_botao"><p class="texto_botao_borda_superior">Home</p></div>
+        </a>
     </div>
 
     <div class="painel_clientes">
@@ -50,12 +50,12 @@
                         <td>@cliente.Telefone</td>
                         <td>
                             <a class="hyperlink_tabela" href="@Url.Action("VisualizarCliente", "Clientes", new { cpf = @cliente.CPF })">
-                                <div class="botao_tabela">Visualizar Cliente</div>
+                                <div class="botao_tabela botao">Visualizar Cliente</div>
                             </a>
                         </td>
                         <td>
                             <a class="hyperlink_tabela" href="@Url.Action("DeleteUsuario", "Clientes", new { cpf = cliente.CPF })">
-                                <div class="botao_tabela">Remover</div>
+                                <div class="botao_tabela botao">Remover</div>
                             </a>
                         </td>
                     </tr>
@@ -67,7 +67,7 @@
         </table>
 
         <a class="hyperlink_tabela" href="@Url.Action("VisualizarCliente", "Clientes")">
-            <div class="botao_tabela">Adicionar Cliente</div>
+            <div class="botao_tabela botao">Adicionar Cliente</div>
         </a>
 
     </div>

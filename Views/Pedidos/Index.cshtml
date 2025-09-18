@@ -24,7 +24,7 @@
     <!-- barra superior     -->
     <div class="borda_superior">
         <a class="style-botao-a" href="@Url.Action("Index", "Home")">
-            <div class="borda_superior_botao"><p class="texto_botao_borda_superior">Home</p></div>
+            <div class="botao borda_superior_botao"><p class="texto_botao_borda_superior">Home</p></div>
         </a>
     </div>
 
@@ -104,13 +104,13 @@
 
                         <td>
                             <a class="hyperlink_tabela" href="@Url.Action("VisualizaPedido", "Pedidos", new { id = p.Id})">
-                                <div class="botao_tabela">Visualizar Pedido</div>
+                                <div class="botao_tabela botao">Visualizar Pedido</div>
                             </a>
                         </td>
 
                         <td>
                             <a class="hyperlink_tabela" href="@Url.Action("VisualizarCliente", "Clientes", new { cpf = p.Cliente?.CPF })">
-                                <div class="botao_tabela">Visualizar Cliente</div>
+                                <div class="botao_tabela botao">Visualizar Cliente</div>
                             </a>
                         </td>
                         

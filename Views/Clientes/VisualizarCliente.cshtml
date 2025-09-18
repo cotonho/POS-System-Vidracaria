@@ -14,7 +14,11 @@
 </head>
 <body class="bg-light">
 
-    <div class="borda_superior"></div>
+    <div class="borda_superior">
+        <a class="style-botao-a" href="@Url.Action("Index", "Home")">
+            <div class="botao borda_superior_botao"><p class="texto_botao_borda_superior">Home</p></div>
+        </a>
+    </div>
 
     <div class="formulario">
         @using (@Html.BeginForm("CrudUsuario", "Clientes", FormMethod.Post, new { id = "form-crud-usuario" }))
