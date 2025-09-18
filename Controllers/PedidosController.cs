@@ -92,7 +92,7 @@ namespace VidracariaDoMarcinho.Controllers
                 pedidoAlterado.Silicone = orcamento.Silicone;
                 pedidoAlterado.Box = orcamento.Box;
                 pedidoAlterado.ParcelasPagas = orcamento.ParcelasPagas;
-                pedidoAlterado.ValorParcelas = orcamento.ValorParcelas;
+                pedidoAlterado.ValorParcelas = (orcamento.ValorParcelas)/100;
                 pedidoAlterado.ValorPago = (orcamento.ValorPago)/100;
             }
             else

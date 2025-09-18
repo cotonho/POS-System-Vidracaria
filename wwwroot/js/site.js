@@ -298,8 +298,11 @@ function recalculaTotal() {
         total30pct += preco * qtde;
     });
 
+    
+
     if (parcelas > 1) {
-        precoParcelas = (total30pct * 1.1) / parcelas;
+        total30pct *= 1.1
+        precoParcelas = (total30pct) / parcelas;
     } else {
         precoParcelas = total30pct;
     }
@@ -328,9 +331,11 @@ function calculaValorParcela() {
         valorAPagar = 0;
     }
     let valor = (valorAPagar / parcelasAPagar).toFixed(2)
-    if (double.IsNaN(valor) || double.IsInfinity(valor)) {
+
+    if (valor.isNaN || valor.IsInfinity) {
         valor = 0;
     }
+
     document.getElementById("valor-parcelas-input").value = valor;
 }
 
@@ -375,14 +380,16 @@ function reduzTotal() {
     const parcelasPagas = parseFloat(document.getElementById("parcelas-pagas-input")?.value) || 0;
     const faltam = parcelas - parcelasPagas;
 
-    if (faltam === 1) {
-        total *= 1.3;
-    } else {
-        total = total * 1.3 * 1.1;
-    }
+    total *= 1.3
 
     // Adiciona total de itens (sem multiplicador)
     total += totalItens;
+
+    if (faltam === 1) {
+        total = total;
+    } else {
+        total = total * 1.1;
+    }
 
     if (total < 0) { total = 0 };
     // Atualiza input do total
@@ -390,10 +397,18 @@ function reduzTotal() {
 }
 
 
+function somarValor() {
+    const valorPagoInput = document.getElementById("valor-pago-input");
+    const adicionarValorInput = document.getElementById("adicionar-valor");
 
-window.onload = function () {
-    reduzTotal();
-    atualizarCampos();
-    calculaValorParcela();
-};
+    let valorPago = parseFloat(valorPagoInput.value.replace(",", ".")) || 0;
+    let adicionar = parseFloat(adicionarValorInput.value.replace(",", ".")) || 0;
 
+    let novoValor = valorPago + adicionar;
+
+    valorPagoInput.value = novoValor.toFixed(2);
+
+    // limpa o campo adicionar
+    adicionarValorInput.value = "0";
+    calculaValorParcela()
+}
