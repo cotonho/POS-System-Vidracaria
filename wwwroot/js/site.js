@@ -167,21 +167,12 @@ $(document).ready(function () {
         let itens = [];
         let vidros = [];
 
-        // Validações antes de enviar
-        if (!clienteCPF) {
-            alert("Selecione um cliente!");
-            return;
-        }
-
+        // coleta os itens da tabela
         $("#tabelaSelecionados tbody tr").each(function () {
             let materialId = $(this).data("id");
             let quantidade = parseInt($(this).find(".qtde").val() || 0);
             let precoText = $(this).find(".preco-item").text().trim();
             let precoUnitario = parseFloat(precoText.replace(",", "."));
-
-            if (!materialId) {
-                return true; // continue
-            }
 
             if (materialId && quantidade > 0 && !isNaN(precoUnitario)) {
                 itens.push({
@@ -192,6 +183,7 @@ $(document).ready(function () {
             }
         });
 
+        // coleta os vidros da tabela
         $("#tabelaVidrosAdicionados tbody tr").each(function () {
             let altura = parseFloat($(this).find("td:eq(0)").text().trim()) || 0;
             let largura = parseFloat($(this).find("td:eq(1)").text().trim()) || 0;
@@ -202,7 +194,6 @@ $(document).ready(function () {
             let precoText = $(this).find(".preco-item").text().trim();
             let preco = parseFloat(precoText.replace(",", ".")) || 0;
 
-            // pega o id do material associado ao vidro (você guardou no tr com data-id)
             let materialId = $(this).data("id");
 
             if (materialId && quantidade > 0 && preco > 0) {
@@ -228,10 +219,8 @@ $(document).ready(function () {
             ClienteCPF: clienteCPF,
             Itens: itens,
             Vidros: vidros,
-
             LocalInstalacao: $("#instalacao-input").val(),
             Observacoes: $("#obs-orcamento-input").val(),
-
             Custo: parseFloat($("#valorTotal").text()) || 0,
             Total: parseFloat($("#valor-total-pct").text()) || 0,
             Gasolina: parseFloat($("#gasolina-input").val()) || 0,
@@ -242,11 +231,7 @@ $(document).ready(function () {
             ParcelasPagas: 0
         };
 
-
-        console.log("Enviando dados:", dto); // Para debug
-
-
-
+        // AJAX que envia para o controller do orçamento
         $.ajax({
             type: "POST",
             url: saveUrl,
@@ -256,14 +241,17 @@ $(document).ready(function () {
             success: function (res) {
                 if (res.success) {
                     Swal.fire({
-                        //icon: 'success',
+                        icon: 'success',
                         title: 'Sucesso!',
                         text: res.message,
                         confirmButtonText: 'Ok'
+                    }).then(() => {
+                        // redireciona para a home depois de salvar
+                        window.location.href = '/Home/Index';
                     });
                 } else {
                     Swal.fire({
-                        //icon: 'error',
+                        icon: 'error',
                         title: 'Ops...',
                         text: res.message,
                         confirmButtonText: 'Ok'
@@ -272,7 +260,7 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 Swal.fire({
-                    //icon: 'error',
+                    icon: 'error',
                     title: 'Erro!',
                     text: 'Ocorreu um erro na requisição.',
                     confirmButtonText: 'Ok'
@@ -280,6 +268,7 @@ $(document).ready(function () {
             }
         });
     });
+
 });
 
 function recalculaTotal() {
@@ -332,25 +321,33 @@ function recalculaTotal() {
 
 
 function calculaValorParcela() {
-    let total = document.getElementById("total-input").value,
-        parcelas = document.getElementById("parcelas-input").value,
-        parcelasPagas = document.getElementById("parcelas-pagas-input").value,
-        valorPago = document.getElementById("valor-pago-input").value || 0
+    let total = parseFloat(document.getElementById("total-input").value) || 0;
+    let parcelas = parseInt(document.getElementById("parcelas-input").value) || 0;
+    let parcelasPagas = parseInt(document.getElementById("parcelas-pagas-input").value) || 0;
+    let valorPago = parseFloat(document.getElementById("valor-pago-input").value) || 0;
 
-    let parcelasAPagar = parcelas - parcelasPagas,
-        valorAPagar = total - valorPago;
+    let parcelasAPagar = parcelas - parcelasPagas;
+    let valorAPagar = total - valorPago;
 
     if (valorAPagar < 0) {
         valorAPagar = 0;
     }
-    let valor = (valorAPagar / parcelasAPagar).toFixed(2)
 
-    if (valor.isNaN || valor.IsInfinity) {
+    let valor = 0;
+    if (parcelasAPagar > 0) {
+        valor = valorAPagar / parcelasAPagar;
+    }
+
+    if (isNaN(valor) || !isFinite(valor)) {
         valor = 0;
     }
 
-    document.getElementById("valor-parcelas-input").value = valor;
+    document.getElementById("valor-parcelas-input").value = valor.toFixed(2);
+    if (valor == 0) {
+        document.getElementById("Status").value = "Concluído"
+    }
 }
+
 
 function reduzTotal() {
     let totalVidros = 0;
@@ -410,21 +407,41 @@ function reduzTotal() {
 }
 
 
-function somarValor() {
+function somarValor(parcela) {
     const valorPagoInput = document.getElementById("valor-pago-input");
     const adicionarValorInput = document.getElementById("adicionar-valor");
+    const parcelasPagasInput = document.getElementById("parcelas-pagas-input");
 
     let valorPago = parseFloat(valorPagoInput.value.replace(",", ".")) || 0;
-    let adicionar = parseFloat(adicionarValorInput.value.replace(",", ".")) || 0;
+    let adicionar = 0;
 
+    if (parcela === 1) {
+        // pega o valor da parcela diretamente
+        const valorParcelas = document.getElementById("valor-parcelas-input");
+        adicionar = parseFloat(valorParcelas.value.replace(",", ".")) || 0;
+
+        // aumenta a quantidade de parcelas pagas em 1
+        let parcelasPagas = parseInt(parcelasPagasInput.value) || 0;
+        parcelasPagasInput.value = parcelasPagas + 1;
+    } else {
+        // pega o valor digitado no campo "adicionar valor"
+        adicionar = parseFloat(adicionarValorInput.value.replace(",", ".")) || 0;
+    }
+
+    // soma os valores
     let novoValor = valorPago + adicionar;
 
+    // atualiza o input de valor pago
     valorPagoInput.value = novoValor.toFixed(2);
 
     // limpa o campo adicionar
     adicionarValorInput.value = "0";
-    calculaValorParcela()
+
+    // recalcula parcelas
+    calculaValorParcela();
 }
+
+
 
 //botao salvar do visualizar clientes do clientes
 $(document).ready(function () {
@@ -593,3 +610,46 @@ $(document).ready(function () {
         });
     });
 });
+
+
+$(document).ready(function () {
+    $("#form-crud-pedido").on("submit", function (e) {
+        e.preventDefault(); // bloqueia envio imediato
+
+        Swal.fire({
+            title: 'Deseja salvar este pedido?',
+            text: "As alterações serão registradas.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sim, salvar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // envia de verdade
+                $.ajax({
+                    url: '/Pedidos/CrudPedido',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (res) {
+                        if (res.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Sucesso!',
+                                text: res.message,
+                                confirmButtonText: 'Ok'
+                            }).then(() => {
+                                window.location.href = '/Pedidos/Index';
+                            });
+                        } else {
+                            Swal.fire('Erro!', res.message, 'error');
+                        }
+                    },
+                    error: function () {
+                        Swal.fire('Erro!', 'Não foi possível salvar o pedido.', 'error');
+                    }
+                });
+            }
+        });
+    });
+});
+

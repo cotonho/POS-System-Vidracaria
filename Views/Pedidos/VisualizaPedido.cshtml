@@ -63,12 +63,25 @@
             <br>
 
             <br />
-            @* local instalação *@
-            <label class="texto-form">Local de instalação</label>
+            <div class="form-group" style="display: flex; gap: 10px; align-items: flex-start;">
+                <!-- Local de Instalação -->
+                <div style="flex: 1;">
+                    <label class="texto-form">Local de instalação</label>
+                    <br />
+                    @Html.EditorFor(model => model.LocalInstalacao, new { htmlAttributes = new { @class = "instalacao-input input-box texto-form" } })
+                </div>
 
-            <br />
-            @Html.EditorFor(model => model.LocalInstalacao, new { htmlAttributes = new { @class = "instalacao-input input-box texto-form" } })
-            <br />
+                <!-- Endereço do Cliente (readonly) -->
+                <div style="flex: 1;">
+                    <label class="texto-form">Endereço do Cliente</label>
+                    <br />
+                    <input type="text" class="input-box texto-form" 
+                           readonly="readonly"
+                           value="@($"{Model.Cliente.Rua}, {Model.Cliente.Numero}, {Model.Cliente.Bairro}, {Model.Cliente.Cidade} - {Model.Cliente.CEP}")" />
+                </div>
+            </div>
+
+            
 
             @* obs *@
             @Html.LabelFor(model => model.Observacoes, htmlAttributes: new { @class = "obs texto-form" })
@@ -155,20 +168,25 @@
                         value = Model.ValorPago.ToString(CultureInfo.InvariantCulture),
                         onchange = "calculaValorParcela()" 
                     })
+                    <div>
+                        <button type="button" class="btn btn-parcela" onclick="somarValor(1)">Pagar Parcela</button>
+                    </div>
                 </div>
 
                 <!-- Campo Adicionar Valor -->
-                <div>
-                    <label for="adicionar-valor" class="texto-form">Adicionar Valor</label>
-                    <br />
-                    <input type="number" id="adicionar-valor" 
-                           class="input-box texto-form" 
-                           step="0.01" min="0" value="0" />
-                </div>
+                <div style="display: flex">
+                    <div>
+                        <label for="adicionar-valor" class="texto-form">Adicionar Valor</label>
+                        <br />
+                        <input type="number" id="adicionar-valor" 
+                               class="input-box texto-form" 
+                               step="0.01" min="0" value="0" />
+                    </div>
+               </div>
 
                 <!-- Botão Somar -->
                 <div>
-                    <button type="button" class="btn btn-success" onclick="somarValor()">Adicionar</button>
+                    <button type="button" class="btn btn-success" onclick="somarValor(0)">Adicionar</button>
                 </div>
             </div>
 
@@ -228,7 +246,7 @@
 
 
             <br />
-            <button type="submit" class="btn btn-primary rounded-pill px-4">Salvar</button>
+            <button type="submit" id="btnSalvarPedido" class="btn btn-primary rounded-pill px-4">Salvar</button>
 
             @* <div class="text-center campo-de-texto">
                 <a href="@Url.Action("Index", "Clientes")" class="btn btn-secondary rounded-pill px-4">Voltar</a>
