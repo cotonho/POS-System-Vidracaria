@@ -125,7 +125,7 @@
     padding-right: 2vw;
     background-color: #eaeaea;
     /*    box-shadow: -2px 0 5px rgba(0,0,0,0.3);*/
-    overflow-y: auto;
+/*    overflow-y: auto;*/
 }
 
 
@@ -238,4 +238,8 @@
     border-bottom: 1px solid black;
     max-width: 100%;
     margin-bottom: 20px;
+}
+
+.qtde {
+    max-width: 4vw;
 }

@@ -197,12 +197,11 @@
                             <td>@item.Largura</td>
                             <td>@item.Cor</td>
                             <td>
-                            <a class="hyperlink_tabela" href="@Url.Action("DeleteVidro", "Pedidos", new { id = item.Id })">
-                                    <div class="botao_tabela">Remover</div>
-                                </a>
+                                <button class="btn-remover-vidro" data-id="@item.Id" data-tipo="vidro">Remover</button>
                             </td>
                         </tr>
                     }
+
                     @foreach (var item in Model.Itens)
                     {
                         <tr>
@@ -214,12 +213,11 @@
                             <td></td>
                             <td>@item.Material?.Cor</td>
                             <td>
-                                <a class="hyperlink_tabela" href="@Url.Action("DeleteItem", "Pedidos", new { id = item.Id })">
-                                    <div class="botao_tabela">Remover</div>
-                                </a>
+                                <button class="btn-remover-item" data-id="@item.Id" data-tipo="item">Remover</button>
                             </td>
                         </tr>
                     }
+
                 </tbody>
             </table>
 
@@ -246,6 +244,8 @@
             calculaValorParcela();
         };
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     </div>
 
 </body>

@@ -44,18 +44,18 @@ namespace VidracariaDoMarcinho.Controllers
 
         }
 
-        public JsonResult DeleteMaterial(Material material)
+        [HttpPost]
+        public JsonResult DeleteMaterial([FromForm] int Id)
         {
-            var materialParaApagar = _context.Materiais?.FirstOrDefault(c => c.Id == material.Id);
+            var materialParaApagar = _context.Materiais.FirstOrDefault(c => c.Id == Id);
             if (materialParaApagar != null)
             {
                 _context.Materiais.Remove(materialParaApagar);
                 _context.SaveChanges();
                 return Json(new { success = true, message = "Material deletado com sucesso!" });
             }
-            else
-                return Json(new { success = false, message = "O material não foi deletado!" });
-                
+            return Json(new { success = false, message = "O material não foi deletado!" });
         }
+
     }
 }

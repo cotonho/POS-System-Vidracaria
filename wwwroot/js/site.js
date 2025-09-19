@@ -255,15 +255,28 @@ $(document).ready(function () {
             dataType: "json",
             success: function (res) {
                 if (res.success) {
-                    alert("Orçamento salvo com sucesso! ID: " + res.id);
-                    window.location.href = '/Orcamento/Details/' + res.id;
+                    Swal.fire({
+                        //icon: 'success',
+                        title: 'Sucesso!',
+                        text: res.message,
+                        confirmButtonText: 'Ok'
+                    });
                 } else {
-                    alert("Erro: " + (res.message || "Erro ao salvar orçamento"));
+                    Swal.fire({
+                        //icon: 'error',
+                        title: 'Ops...',
+                        text: res.message,
+                        confirmButtonText: 'Ok'
+                    });
                 }
             },
             error: function (xhr, status, error) {
-                console.error("Erro AJAX:", error);
-                alert("Erro no servidor: " + error);
+                Swal.fire({
+                    //icon: 'error',
+                    title: 'Erro!',
+                    text: 'Ocorreu um erro na requisição.',
+                    confirmButtonText: 'Ok'
+                });
             }
         });
     });
@@ -412,3 +425,171 @@ function somarValor() {
     adicionarValorInput.value = "0";
     calculaValorParcela()
 }
+
+//botao salvar do visualizar clientes do clientes
+$(document).ready(function () {
+    $("#form-crud-usuario").on("submit", function (e) {
+        e.preventDefault(); // impede o form de recarregar a página
+
+        $.ajax({
+            url: '/Clientes/CrudUsuario',
+            type: 'POST',
+            data: $(this).serialize(), // pega todos os inputs do form
+            success: function (res) {
+                if (res.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso!',
+                        text: res.message
+                    }).then(() => {
+                        // redireciona para a página de clientes
+                        window.location.href = '/Clientes/Index';
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro!',
+                        text: res.message
+                    });
+                }
+            },
+            error: function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro!',
+                    text: 'Ocorreu um erro na requisição.'
+                });
+            }
+        });
+    });
+});
+
+
+//botao remover do index de clientes
+$(".btn-remover-cliente").on("click", function (e) {
+    e.preventDefault();
+    let cpf = $(this).data("cpf");
+    Swal.fire({
+        title: 'Tem certeza?',
+        text: "Você não poderá desfazer essa ação!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, remover!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/Clientes/DeleteUsuario',
+                type: 'POST',
+                data: { CPF: cpf },
+                success: function (res) {
+                    if (res.success) location.reload();
+                    else Swal.fire('Erro!', res.message, 'error');
+                },
+                error: function () { Swal.fire('Erro!', 'Não foi possível remover o cliente.', 'error'); }
+            });
+        }
+    });
+});
+
+
+
+//sweetalertt para o botão de remover do visualizar pediddo
+$(".btn-remover-item, .btn-remover-vidro").on("click", function (e) {
+    e.preventDefault();
+    let id = $(this).data("id");
+    let tipo = $(this).data("tipo");
+    let url = tipo === "vidro" ? '/Pedidos/DeleteVidro' : '/Pedidos/DeleteItem';
+
+    Swal.fire({
+        title: 'Tem certeza?',
+        text: "Esse registro será removido!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, remover!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { Id: id },
+                success: function (res) {
+                    if (res.success) location.reload();
+                    else Swal.fire('Erro!', res.message, 'error');
+                },
+                error: function () { Swal.fire('Erro!', 'Não foi possível remover o registro.', 'error'); }
+            });
+        }
+    });
+});
+
+
+$(".btn-remover-material").on("click", function (e) {
+    e.preventDefault();
+
+    let id = $(this).data("id");
+
+    Swal.fire({
+        title: 'Tem certeza?',
+        text: "Você não poderá desfazer essa ação!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, remover!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/Materiais/DeleteMaterial',
+                type: 'POST',
+                data: { Id: id },
+                success: function (res) {
+                    if (res.success) location.reload();
+                    else Swal.fire('Erro!', res.message, 'error');
+                },
+                error: function () {
+                    Swal.fire('Erro!', 'Não foi possível remover o material.', 'error');
+                }
+            });
+        }
+    });
+});
+
+
+$(document).ready(function () {
+    $("#form-crud-material").on("submit", function (e) {
+        e.preventDefault(); // evita o reload da página
+
+        $.ajax({
+            url: '/Materiais/CrudMaterial',
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function (res) {
+                if (res.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso!',
+                        text: res.message,
+                        confirmButtonText: 'Ok'
+                    }).then(() => {
+                        // redireciona para a página de materiais
+                        window.location.href = '/Materiais/Index';
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro!',
+                        text: res.message
+                    });
+                }
+            },
+            error: function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro!',
+                    text: 'Ocorreu um erro ao salvar o material.'
+                });
+            }
+        });
+    });
+});
