@@ -26,25 +26,25 @@
             <div class="botao borda_superior_botao"><p class="texto_botao_borda_superior">Home</p></div>
         </a>
     </div>
-    
+
     <br />
 
     <div class="formulario">
-        
+
 
         <div>
 
             <div class="tabela_selecao_vidros">
-                
-                
+
+
                 <div class="campos-vidros">
 
                     <select id="clienteCPF">
                         @foreach (var c in ViewBag.Clientes as List<Cliente>)
                         {
-                        <option value="@c.CPF">@c.Nome (@c.CPF)</option>
+                            <option value="@c.CPF">@c.Nome (@c.CPF)</option>
                         }
-                        </select>
+                    </select>
 
                     <select id="VidroId" onchange="atualizarCampos(), atualizarPrecoVidro()">
                         @foreach (var m in ViewBag.Material as List<Material>)
@@ -133,21 +133,21 @@
         <div>
             <div class="tabela_selecao">
                 <div>
-                    <label class="texto-form">Valor do Box</label>
-                    <input id="box-input" class="input-box texto-form" type="number"
+                    <label class="texto-form">Mão de Obra</label>
+                    <input id="MaoDeObra" class="input-box texto-form" type="number"
                            step="0.50" min_value="0.00" name="box-input" onchange="recalculaTotal()" />
                 </div>
 
                 <div>
-                    <label class="texto-form">Valor do Silicone</label>
-                    <input id="silicone-input" class="input-box texto-form" type="number"
-                           step="0.50" min_value="0.00" name="silicone-input" onchange="recalculaTotal()" />
+                    <label class="texto-form">Porcentagem de Lucro (%)</label>
+                    <input id="porcentagem-lucro-input" class="input-box texto-form" type="number"
+                           step="1" name="box-input" onchange="recalculaTotal()" />
                 </div>
 
                 <div>
-                    <label class="texto-form">Valor do Gasolina</label>
-                    <input id="gasolina-input" class="input-box texto-form" type="number"
-                           step="0.50" min_value="0.00" name="gasolina-input" onchange="recalculaTotal()" />
+                    <label class="texto-form">Porcentagem de Aumento nas Parcelas (%)</label>
+                    <input id="porcentagem-parcela-input" class="input-box texto-form" type="number"
+                           step="1" name="box-input" onchange="recalculaTotal()" />
                 </div>
             </div>
 
@@ -165,10 +165,9 @@
                 </div>
 
                 <div>
-                    <label class="texto-form">Parecelas</label>
+                    <label class="texto-form">Parcelas</label>
                     <input id="parcelas-input" class="input-box texto-form" type="number"
                            step="1" min="1" name="parcelas-input" onchange="recalculaTotal()" value="1" />
-
                 </div>
             </div>
 
@@ -229,9 +228,12 @@
         <script>
                 window.onload = function () {
                 atualizarCampos();
+                document.getElementById("porcentagem-lucro-input").value = 30;
+                document.getElementById("porcentagem-parcela-input").value = 10;
+                // atualizarCampos();
                 atualizarPrecoVidro();
             };
-            
+
         </script>
     </div>
 

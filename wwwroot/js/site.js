@@ -91,13 +91,13 @@ $(document).ready(function () {
 
 
         // se já existe, só aumenta quantidade
-        let existing = $("#tabelaVidrosAdicionados tbody tr[data-id='" + materialId + "']");
-        if (existing.length) {
-            let q = parseInt(existing.find(".qtde").val() || 0) + 1;
-            existing.find(".qtde").val(q);
-            recalculaTotal();
-            return;
-        }
+        //let existing = $("#tabelaVidrosAdicionados tbody tr[data-id='" + materialId + "']");
+        //if (existing.length) {
+        //    let q = parseInt(existing.find(".qtde").val() || 0) + 1;
+        //    existing.find(".qtde").val(q);
+        //    recalculaTotal();
+        //    return;
+        //}
 
         let Altura = document.getElementById("altura-input").value,
             Largura = document.getElementById("largura-input").value,
@@ -193,7 +193,6 @@ $(document).ready(function () {
             let quantidade = parseInt($(this).find(".qtde").val() || 0);
             let precoText = $(this).find(".preco-item").text().trim();
             let preco = parseFloat(precoText.replace(",", ".")) || 0;
-
             let materialId = $(this).data("id");
 
             if (materialId && quantidade > 0 && preco > 0) {
@@ -223,12 +222,15 @@ $(document).ready(function () {
             Observacoes: $("#obs-orcamento-input").val(),
             Custo: parseFloat($("#valorTotal").text()) || 0,
             Total: parseFloat($("#valor-total-pct").text()) || 0,
-            Gasolina: parseFloat($("#gasolina-input").val()) || 0,
-            Silicone: parseFloat($("#silicone-input").val()) || 0,
-            Box: parseFloat($("#box-input").val()) || 0,
+            Gasolina: 0,
+            Silicone: 0,
+            Box: 0,
             ValorParcelas: parseFloat($("#valor-total-parcela").text()) || 0,
             Parcelas: parseInt($("#parcelas-input").val()) || 0,
-            ParcelasPagas: 0
+            ParcelasPagas: 0,
+            PorcentagemLucro: parseInt($("#porcentagem-lucro-input").val()) || 0,
+            PorcentagemParcela: parseInt($("#porcentagem-parcela-input").val()) || 0,
+            MaoDeObra: parseFloat($("#MaoDeObra").val()) || 0
         };
 
         // AJAX que envia para o controller do orçamento
@@ -285,11 +287,17 @@ function recalculaTotal() {
         total += preco * qtde;
     });
 
-    total += parseFloat(document.getElementById("box-input").value) || 0;
-    total += parseFloat(document.getElementById("silicone-input").value) || 0;
-    total += parseFloat(document.getElementById("gasolina-input").value) || 0;
+    let porcentagem = document.getElementById("porcentagem-lucro-input").value;
+    porcentagem /= 100;
+    porcentagem += 1;
 
-    total30pct = total * 1.3;
+    let porcentagemParcelas = document.getElementById("porcentagem-parcela-input").value;
+    porcentagemParcelas /= 100;
+    porcentagemParcelas += 1;
+
+
+    total += parseFloat(document.getElementById("MaoDeObra").value) || 0;
+    total30pct = total * porcentagem;
 
 
     $("#tabelaSelecionados tbody tr").each(function () {
@@ -303,7 +311,7 @@ function recalculaTotal() {
     
 
     if (parcelas > 1) {
-        total30pct *= 1.1
+        total30pct *= porcentagemParcelas;
         precoParcelas = (total30pct) / parcelas;
     } else {
         precoParcelas = total30pct;
@@ -380,17 +388,24 @@ function reduzTotal() {
     // Base = total de vidros
     let total = totalVidros;
 
-    // Soma extras: Gasolina, Silicone, Box
-    total += parseFloat(document.getElementById("Gasolina").value) || 0;
-    total += parseFloat(document.getElementById("Silicone").value) || 0;
-    total += parseFloat(document.getElementById("Box").value) || 0;
+    
+    total += parseFloat(document.getElementById("MaoDeObra").value) || 0;
+
 
     // Multiplicadores aplicam apenas em vidros + extras
     const parcelas = parseFloat(document.getElementById("parcelas-input")?.value) || 0;
     const parcelasPagas = parseFloat(document.getElementById("parcelas-pagas-input")?.value) || 0;
     const faltam = parcelas - parcelasPagas;
 
-    total *= 1.3
+    let porcentagem = document.getElementById("porcentagem-lucro-input").value;
+    porcentagem /= 100;
+    porcentagem += 1;
+
+    let porcentagemParcelas = document.getElementById("porcentagem-parcela-input").value;
+    porcentagemParcelas /= 100;
+    porcentagemParcelas += 1;
+
+    total *= porcentagem
 
     // Adiciona total de itens (sem multiplicador)
     total += totalItens;
@@ -398,12 +413,14 @@ function reduzTotal() {
     if (faltam === 1) {
         total = total;
     } else {
-        total = total * 1.1;
+        total = total * porcentagemParcelas;
     }
 
     if (total < 0) { total = 0 };
     // Atualiza input do total
     document.getElementById("total-input").value = total.toFixed(2);
+
+    calculaValorParcela()
 }
 
 
@@ -653,3 +670,15 @@ $(document).ready(function () {
     });
 });
 
+function formatarValor(el) {
+    if (el.value) {
+        // garante que vírgula seja tratada como ponto
+        let valor = el.value.replace(',', '.');
+
+        // converte para float e força 2 casas
+        valor = parseFloat(valor).toFixed(2);
+
+        // agora coloca de volta no input (com ponto, porque é number)
+        el.value = valor;
+    }
+}

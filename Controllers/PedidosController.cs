@@ -84,16 +84,16 @@ namespace VidracariaDoMarcinho.Controllers
                 pedidoAlterado.LocalInstalacao = orcamento.LocalInstalacao;
                 pedidoAlterado.Observacoes = orcamento.Observacoes;
 
-                //Falta adicionar o valor do custo
-                //pedidoAlterado.Custo = 
-
                 pedidoAlterado.Total = (orcamento.Total)/100;
-                pedidoAlterado.Gasolina = orcamento.Gasolina;
-                pedidoAlterado.Silicone = orcamento.Silicone;
-                pedidoAlterado.Box = orcamento.Box;
+                pedidoAlterado.Gasolina = 0;
+                pedidoAlterado.Silicone = 0;
+                pedidoAlterado.Box = 0;
+                pedidoAlterado.PorcentagemLucro = orcamento.PorcentagemLucro;
+                pedidoAlterado.PorcentagemParcela = orcamento.PorcentagemParcela;
                 pedidoAlterado.ParcelasPagas = orcamento.ParcelasPagas;
                 pedidoAlterado.ValorParcelas = (orcamento.ValorParcelas)/100;
                 pedidoAlterado.ValorPago = (orcamento.ValorPago)/100;
+                pedidoAlterado.MaoDeObra = (orcamento.MaoDeObra)/100;
             }
             else
                 _context.Orcamentos.Add(orcamento);

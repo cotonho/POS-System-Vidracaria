@@ -18,6 +18,7 @@ namespace VidracariaDoMarcinho.Models
 
         public decimal Custo { get; set; }
         public decimal Total { get; set; }
+        public decimal? MaoDeObra { get; set; }
         public decimal Gasolina { get; set; }
         public decimal Silicone { get; set; }
         public decimal Box { get; set; }
@@ -25,6 +26,9 @@ namespace VidracariaDoMarcinho.Models
         public int Parcelas { get; set; }
         public int ParcelasPagas { get; set; }
         public decimal ValorPago { get; set; } = 0;
+
+        public decimal? PorcentagemLucro { get; set; }
+        public decimal? PorcentagemParcela { get; set; }
 
 
 
@@ -54,6 +58,7 @@ namespace VidracariaDoMarcinho.Models
 
         public decimal Custo { get; set; }
         public decimal Total { get; set; }
+        public decimal? MaoDeObra { get; set; }
         public decimal Gasolina { get; set; }
         public decimal Silicone { get; set; }
         public decimal Box { get; set; }
@@ -61,6 +66,9 @@ namespace VidracariaDoMarcinho.Models
         public int Parcelas { get; set; }
         public int ParcelasPagas { get; set; }
         public decimal ValorPago { get; set; } = 0;
+
+        public decimal? PorcentagemLucro { get; set; }
+        public decimal? PorcentagemParcela { get; set; }
 
 
         public List<OrcamentoItemDto> Itens { get; set; }
