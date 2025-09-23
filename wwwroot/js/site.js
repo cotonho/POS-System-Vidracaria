@@ -682,3 +682,217 @@ function formatarValor(el) {
         el.value = valor;
     }
 }
+
+
+
+
+
+
+
+
+// formata CPF enquanto o usuário digita e valida a máscara 000.000.000-00
+window.verificaCPF = function () {
+    const input = document.getElementById("cpf") || document.getElementById("CPF");
+    const erro = document.getElementById("erroCPF");
+    if (!input) return false;
+
+    // valor atual e posição do cursor
+    const rawValue = input.value || "";
+    const selectionStart = input.selectionStart || 0;
+
+    // quantos dígitos havia antes do cursor (usado para recomputar caret)
+    const digitsBeforeCursor = (rawValue.slice(0, selectionStart).match(/\d/g) || []).length;
+
+    // pega apenas os dígitos e limita a 11 (CPF)
+    const digits = rawValue.replace(/\D/g, "").slice(0, 11);
+
+    // monta a string formatada progressivamente
+    let formatted = "";
+    if (digits.length > 0) {
+        // 3 primeiros
+        formatted += digits.substring(0, Math.min(3, digits.length));
+        // ponto e próximos 3
+        if (digits.length > 3) {
+            formatted += "." + digits.substring(3, Math.min(6, digits.length));
+        }
+        // segundo ponto e próximos 3
+        if (digits.length > 6) {
+            formatted += "." + digits.substring(6, Math.min(9, digits.length));
+        }
+        // traço e últimos 2
+        if (digits.length > 9) {
+            formatted += "-" + digits.substring(9, Math.min(11, digits.length));
+        }
+    }
+
+    // calcula nova posição do cursor a partir de quantos dígitos estavam antes
+    let newCaret = 0;
+    if (digitsBeforeCursor === 0) {
+        newCaret = 0;
+    } else {
+        let counted = 0;
+        for (let i = 0; i < formatted.length; i++) {
+            if (/\d/.test(formatted[i])) counted++;
+            newCaret++;
+            if (counted >= digitsBeforeCursor) break;
+        }
+        // se contei menos (ex: digitou pro final), posiciona no final
+        if (counted < digitsBeforeCursor) newCaret = formatted.length;
+    }
+
+    // atualiza o valor e a posição do cursor
+    input.value = formatted;
+    try { input.setSelectionRange(newCaret, newCaret); } catch (e) { /* alguns browsers podem falhar se não focado */ }
+
+    // validação simples da máscara completa
+    const regex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+
+    if (!erro) {
+        // sem elemento de erro: apenas retorna booleano
+        return regex.test(formatted);
+    }
+
+    // comportamento UX:
+    if (formatted === "") {
+        erro.textContent = "";
+        input.classList.remove("is-valid", "is-invalid");
+        return false;
+    }
+
+    if (regex.test(formatted)) {
+        erro.textContent = "";
+        input.classList.remove("is-invalid");
+        input.classList.add("is-valid");
+        return true;
+    } else {
+        // se já tiver 11 dígitos mas algo deu errado (improvável), mostra erro.
+        erro.textContent = "Formato inválido, use o formato 000.000.000-00.";
+        input.classList.remove("is-valid");
+        input.classList.add("is-invalid");
+        return false;
+    }
+};
+
+
+// formata telefone enquanto digita e valida máscara com DDD
+window.verificaTelefone = function () {
+    const input = document.getElementById("telefone") || document.getElementById("Telefone");
+    const erro = document.getElementById("erroTelefone"); // opcional, crie um span com esse id
+    if (!input) return false;
+
+    const raw = input.value || "";
+    const selStart = input.selectionStart || 0;
+    const digitsBeforeCursor = (raw.slice(0, selStart).match(/\d/g) || []).length;
+
+    // mantem só dígitos e limita a 11
+    const digits = raw.replace(/\D/g, "").slice(0, 11);
+
+    // monta formatação
+    let formatted = "";
+    if (digits.length > 0) {
+        // DDD (2 dígitos) sempre
+        if (digits.length <= 2) {
+            formatted = "(" + digits;
+        } else {
+            formatted = "(" + digits.slice(0, 2) + ") ";
+
+            const rest = digits.slice(2);
+            if (rest.length <= 4) {
+                formatted += rest;
+            } else if (rest.length <= 8) {
+                // formato com 4 dígitos no final (fixo)
+                formatted += rest.slice(0, 4) + "-" + rest.slice(4);
+            } else {
+                // quando o rest tem 9 dígitos -> celular 5+4
+                formatted += rest.slice(0, 5) + "-" + rest.slice(5, 9);
+            }
+        }
+    }
+
+    // calcula caret new position baseado em quantos dígitos existiam antes do cursor
+    let newCaret = 0;
+    if (digitsBeforeCursor === 0) {
+        newCaret = 0;
+    } else {
+        let counted = 0;
+        for (let i = 0; i < formatted.length; i++) {
+            if (/\d/.test(formatted[i])) counted++;
+            newCaret++;
+            if (counted >= digitsBeforeCursor) break;
+        }
+        if (counted < digitsBeforeCursor) newCaret = formatted.length;
+    }
+
+    input.value = formatted;
+    try { input.setSelectionRange(newCaret, newCaret); } catch (e) { /* ignora */ }
+
+    // validação de máscara: (##) ####-#### ou (##) #####-####
+    const regex10 = /^\(\d{2}\)\s\d{4}-\d{4}$/;
+    const regex11 = /^\(\d{2}\)\s\d{5}-\d{4}$/;
+
+    if (!erro) {
+        return regex10.test(formatted) || regex11.test(formatted);
+    }
+
+    if (formatted === "") {
+        erro.textContent = "";
+        input.classList.remove("is-valid", "is-invalid");
+        return false;
+    }
+
+    if (regex10.test(formatted) || regex11.test(formatted)) {
+        erro.textContent = "";
+        input.classList.remove("is-invalid");
+        input.classList.add("is-valid");
+        return true;
+    } else {
+        erro.textContent = "Telefone inválido. Use (00) 0000-0000 ou (00) 00000-0000.";
+        input.classList.remove("is-valid");
+        input.classList.add("is-invalid");
+        return false;
+    }
+};
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("form-crud-usuario");
+    if (!form) return;
+
+    form.addEventListener("submit", function (event) {
+        // 1) validação nativa (required, pattern, etc.)
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            // mostra mensagens nativas do navegador
+            form.reportValidity();
+            const primeiroInvalido = form.querySelector(":invalid");
+            if (primeiroInvalido) {
+                primeiroInvalido.scrollIntoView({ behavior: "smooth", block: "center" });
+                primeiroInvalido.focus();
+            }
+            return;
+        }
+
+        // 2) validações custom (chama as suas funções, que devem retornar true/false)
+        // - usa fallback true caso a função não exista (para não bloquear o envio)
+        const cpfOK = (typeof window.verificaCPF === "function") ? window.verificaCPF() : true;
+        const telOK = (typeof window.verificaTelefone === "function") ? window.verificaTelefone() : true;
+
+        if (!(cpfOK && telOK)) {
+            // impede envio e foca no primeiro elemento com erro
+            event.preventDefault();
+            const primeiroErro = form.querySelector(".is-invalid") || form.querySelector(":invalid");
+            if (primeiroErro) {
+                primeiroErro.scrollIntoView({ behavior: "smooth", block: "center" });
+                // tenta focar (alguns elementos podem não aceitar focus)
+                try { primeiroErro.focus(); } catch (e) { /* ignore */ }
+            }
+            return;
+        }
+
+        // 3) tudo OK → não chamamos preventDefault(), o submit segue normalmente.
+        // Se quiser submeter via JS (sem recarregar), descomente as linhas abaixo:
+        // event.preventDefault();
+        // fetch(...) ou form.submit();
+    });
+});
+

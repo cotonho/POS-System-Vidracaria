@@ -31,17 +31,29 @@
             @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "nome-usuario-input input-box texto-form" } })
             <br />
 
-            @* CPF *@
+            @* CPF *@ 
             @Html.LabelFor(model => model.CPF, htmlAttributes: new { @class = "cpf-usuario texto-form" })
 
             <br />
-            @Html.EditorFor(model => model.CPF, new { htmlAttributes = new { @class = "cpf-usuario-input input-box texto-form" } })
+            @Html.EditorFor(model => model.CPF, new { htmlAttributes = new { @id = "cpf", @class = "cpf-usuario-input input-box texto-form", oninput = "verificaCPF()", required="required" } })
+            <span id="erroCPF" class="text-danger small"></span>
+
+
             <br />
             @* Telefone *@
             @Html.LabelFor(model => model.Telefone, htmlAttributes: new { @class = "telefone-usuario texto-form" })
 
             <br />
-            @Html.EditorFor(model => model.Telefone, new { htmlAttributes = new { @class = "telefone-usuario-input input-box texto-form" } })
+            @Html.EditorFor(model => model.Telefone, new {
+                htmlAttributes = new {
+                    @id = "telefone",
+                    @class = "telefone-input input-box texto-form",
+                    oninput = "verificaTelefone()",
+                    required = "required"
+                }
+            })
+            <span id="erroTelefone" class="text-danger small"></span>
+
             <br>
 
             <div class="endereco">

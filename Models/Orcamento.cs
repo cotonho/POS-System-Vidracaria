@@ -31,7 +31,7 @@ namespace VidracariaDoMarcinho.Models
         public decimal? PorcentagemParcela { get; set; }
 
 
-
+        
         public virtual Cliente Cliente { get; set; }
         public virtual ICollection<OrcamentoItem> Itens { get; set; }
         public virtual ICollection<Vidro> Vidros { get; set; }

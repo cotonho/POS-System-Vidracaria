@@ -51,11 +51,11 @@
                             <td>@material.Preco</td>
                             <td>
                                 <a class="hyperlink_tabela" href="@Url.Action("EditarMaterial", "Materiais", new { id = @material.Id })">
-                                    <div class="botao_tabela">Visualizar Material</div>
+                                    <div class="botao_tabela botao">Visualizar Material</div>
                                 </a>
                             </td>
                             <td>
-                                <button class="btn-remover-material" data-id="@material.Id">Remover</button>
+                            <button class="btn-remover-material" data-id="@material.Id">Remover</button>
                             </td>
                         </tr>
                     }
@@ -66,7 +66,7 @@
             </table>
 
             <a class="hyperlink_tabela" href="@Url.Action("EditarMaterial", "Materiais")">
-                <div class="botao_tabela">Adicionar Material</div>
+                <div class="botao_tabela botao">Adicionar Material</div>
             </a>
         </div>
 
