@@ -29,7 +29,31 @@
 
     <br />
 
+
+    
+
     <div class="formulario">
+
+        <div class="dropdowns">
+        <select id="clienteCPF">
+            @foreach (var c in ViewBag.Clientes as List<Cliente>)
+            {
+                <option value="@c.CPF">@c.Nome (@c.CPF)</option>
+            }
+        </select>
+
+        <select id="VidroId" onchange="atualizarCampos(), atualizarPrecoVidro()">
+            @foreach (var m in ViewBag.Material as List<Material>)
+            {
+                <option value="@m.Id"
+                        data-tipo="@m.Nome"
+                        data-cor="@m.Cor"
+                        data-preco="@m.Preco">
+                    @m.Nome (@m.Cor)
+                </option>
+            }
+        </select>
+    </div>
 
 
         <div>
@@ -38,39 +62,20 @@
 
 
                 <div class="campos-vidros">
-
-                    <select id="clienteCPF">
-                        @foreach (var c in ViewBag.Clientes as List<Cliente>)
-                        {
-                            <option value="@c.CPF">@c.Nome (@c.CPF)</option>
-                        }
-                    </select>
-
-                    <select id="VidroId" onchange="atualizarCampos(), atualizarPrecoVidro()">
-                        @foreach (var m in ViewBag.Material as List<Material>)
-                        {
-                            <option value="@m.Id"
-                                    data-tipo="@m.Nome"
-                                    data-cor="@m.Cor"
-                                    data-preco="@m.Preco">
-                                @m.Nome (@m.Cor)
-                            </option>
-                        }
-                    </select>
-
-                    <br />
-
                     <label class="texto-form">Altura</label>
+                    <br />
                     <input id="altura-input" class="input-box texto-form" type="number" name="altura-input" min="0.1" step="0.1" onchange="atualizarPrecoVidro()" />
 
                     <br />
 
                     <label class="texto-form">Largura</label>
+                    <br />
                     <input id="largura-input" class="input-box texto-form" type="number" name="largura-input" min="0.1" step="0.1" onchange="atualizarPrecoVidro()" />
 
                     <br />
 
                     <label class="texto-form">Observações</label>
+                    <br />
                     <input id="obs-input" class="input-box texto-form" type="text" name="obs-input" />
 
                 </div>
@@ -78,16 +83,19 @@
                 <div class="campos-vidros">
 
                     <label class="texto-form">Tipo do Vidro</label>
+                    <br />
                     <input id="tipo-input" class="input-box texto-form" type="text" name="tipo-input" readonly />
 
                     <br />
 
                     <label class="texto-form">Cor</label>
+                    <br />
                     <input id="cor-vidro-input" class="input-box texto-form" type="text" name="cor-vidro-input" readonly />
 
                     <br />
 
                     <label class="texto-form">Preço</label>
+                    <br />
                     <input id="preco-input" class="input-box texto-form" type="text" name="preco-input" readonly />
 
                     <br />
@@ -132,19 +140,19 @@
 
         <div>
             <div class="tabela_selecao">
-                <div>
+                <div class="item-tabela-selecao">
                     <label class="texto-form">Mão de Obra</label>
                     <input id="MaoDeObra" class="input-box texto-form" type="number"
-                           step="0.50" min_value="0.00" name="box-input" onchange="recalculaTotal()" />
+                           step="0.50" min="0" name="box-input" onchange="recalculaTotal()" />
                 </div>
 
-                <div>
+                <div class="item-tabela-selecao">
                     <label class="texto-form">Porcentagem de Lucro (%)</label>
                     <input id="porcentagem-lucro-input" class="input-box texto-form" type="number"
                            step="1" name="box-input" onchange="recalculaTotal()" />
                 </div>
 
-                <div>
+                <div class="item-tabela-selecao">
                     <label class="texto-form">Porcentagem de Aumento nas Parcelas (%)</label>
                     <input id="porcentagem-parcela-input" class="input-box texto-form" type="number"
                            step="1" name="box-input" onchange="recalculaTotal()" />
@@ -154,17 +162,17 @@
             <br />
 
             <div class="tabela_selecao">
-                <div>
+                <div class="item-tabela-selecao">
                     <label class="texto-form">Local de instalação</label>
                     <input id="instalacao-input" class="input-box texto-form" type="text" name="instalacao-input" />
                 </div>
 
-                <div>
+                <div class="item-tabela-selecao">
                     <label class="texto-form">Observações</label>
                     <input id="obs-orcamento-input" class="input-box texto-form" type="text" name="obs-orcamento-input" />
                 </div>
 
-                <div>
+                <div class="item-tabela-selecao">
                     <label class="texto-form">Parcelas</label>
                     <input id="parcelas-input" class="input-box texto-form" type="number"
                            step="1" min="1" name="parcelas-input" onchange="recalculaTotal()" value="1" />
