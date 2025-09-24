@@ -32,14 +32,14 @@
             @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "nome-material texto-form" })
 
             <br />
-            @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "nome-material-input input-box texto-form" } })
+            @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "nome-material-input input-box texto-form", required="required" } })
             <br />
 
             @* CPF *@
             @Html.LabelFor(model => model.Cor, htmlAttributes: new { @class = "cor-material texto-form" })
 
             <br />
-            @Html.EditorFor(model => model.Cor, new { htmlAttributes = new { @class = "cor-material-input input-box texto-form" } })
+            @Html.EditorFor(model => model.Cor, new { htmlAttributes = new { @class = "cor-material-input input-box texto-form" , required="required"} })
             <br />
             @* Telefone *@
             @Html.LabelFor(model => model.Preco, htmlAttributes: new { @class = "preco-material texto-form" })
