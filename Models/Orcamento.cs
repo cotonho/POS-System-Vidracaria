@@ -29,7 +29,7 @@ namespace VidracariaDoMarcinho.Models
 
         public decimal? PorcentagemLucro { get; set; }
         public decimal? PorcentagemParcela { get; set; }
-
+        public decimal? PorcentagemDesconto { get; set; }
 
         
         public virtual Cliente Cliente { get; set; }
@@ -69,6 +69,8 @@ namespace VidracariaDoMarcinho.Models
 
         public decimal? PorcentagemLucro { get; set; }
         public decimal? PorcentagemParcela { get; set; }
+        public decimal? PorcentagemDesconto { get; set; }
+
 
 
         public List<OrcamentoItemDto> Itens { get; set; }

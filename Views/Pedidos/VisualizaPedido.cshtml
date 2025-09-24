@@ -115,14 +115,20 @@
                     </div>
                     <div class="campo-linha">
                         <label class="texto-form">Porcentagem de lucro</label>
-                    @Html.TextBoxFor(model => model.PorcentagemLucro, new { @class = "porcentagem-lucro-input input-box texto-form", @id = "porcentagem-lucro-input", type = "number", step = "1", onchange = "calculaValorParcela()" })
+                    @Html.TextBoxFor(model => model.PorcentagemLucro, new { @class = "porcentagem-lucro-input input-box texto-form", @id = "porcentagem-lucro-input", type = "number", step = "0.01", onchange = "calculaValorParcela()" })
                     @* @Html.TextBoxFor(model => model.PorcentagemLucro, new { @class = "porcentagem-lucro-input input-box texto-form", @id = "porcentagem-lucro-input", type = "number", step = "1", onchange = "calculaValorParcela()" }) *@
                     </div>
+
+                    <div class="campo-linha">
+                        <label class="texto-form">Porcentagem de Desconto</label>
+                    @Html.TextBoxFor(model => model.PorcentagemDesconto, new { @class = "porcentagem-desconto-input input-box texto-form", @id = "porcentagem-desconto-input", type = "number", step = "0.01", onchange = "reduzTotal()" })
+                    </div>
+
                     <div class="campo-linha">
                         <label class ="texto-form">Porcentagem Adicional do Valor Parcelado</label>
                     @Html.TextBoxFor(model => model.PorcentagemParcela, new {
                         @class = "porcentagem-parcela-input input-box texto-form", @id = "porcentagem-parcela-input",
-                        type = "number", step = "1", onchange = "calculaValorParcela()" })
+                        type = "number", step = "0.01", onchange = "calculaValorParcela()" })
                     </div>
                 </div>
             </div>
@@ -194,8 +200,8 @@
             reduzTotal();
             atualizarCampos();
             calculaValorParcela();
-            document.getElementById("porcentagem-lucro-input").value = parseInt(document.getElementById("porcentagem-lucro-input").value) || 0;
-            document.getElementById("porcentagem-parcela-input").value = parseInt(document.getElementById("porcentagem-parcela-input").value) || 0;        
+            // document.getElementById("porcentagem-lucro-input").value = parseInt(document.getElementById("porcentagem-lucro-input").value) || 0;
+            // document.getElementById("porcentagem-parcela-input").value = parseInt(document.getElementById("porcentagem-parcela-input").value) || 0;        
         };
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -103,6 +103,7 @@ namespace VidracariaDoMarcinho.Controllers
                     Box = dto.Box,
                     PorcentagemParcela = dto.PorcentagemParcela,
                     PorcentagemLucro = dto.PorcentagemLucro,
+                    PorcentagemDesconto = dto.PorcentagemDesconto,
                     ValorParcelas = dto.ValorParcelas,
                     Parcelas = dto.Parcelas,
                     ParcelasPagas = dto.ParcelasPagas,

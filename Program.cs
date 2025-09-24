@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using VidracariaDoMarcinho.Data;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,5 +38,19 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
+{
+    var url = "http://localhost:5000/Home/Index"; // ajuste conforme sua porta/página
+    try
+    {
+        Process.Start(new ProcessStartInfo
+        {
+            FileName = url,
+            UseShellExecute = true
+        });
+    }
+    catch { /* Ignora erros se não conseguir abrir o navegador */ }
+}
 
 app.Run();

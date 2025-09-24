@@ -228,8 +228,9 @@ $(document).ready(function () {
             ValorParcelas: parseFloat($("#valor-total-parcela").text()) || 0,
             Parcelas: parseInt($("#parcelas-input").val()) || 0,
             ParcelasPagas: 0,
-            PorcentagemLucro: parseInt($("#porcentagem-lucro-input").val()) || 0,
-            PorcentagemParcela: parseInt($("#porcentagem-parcela-input").val()) || 0,
+            PorcentagemLucro: parseFloat($("#porcentagem-lucro-input").val()) || 0,
+            PorcentagemParcela: parseFloat($("#porcentagem-parcela-input").val()) || 0,
+            PorcentagemDesconto: parseFloat($("#porcentagem-desconto-input").val()) || 0,
             MaoDeObra: parseFloat($("#MaoDeObra").val()) || 0
         };
 
@@ -308,7 +309,7 @@ function recalculaTotal() {
         total30pct += preco * qtde;
     });
 
-    
+    total30pct -= (total30pct * (parseFloat(document.getElementById("porcentagem-desconto-input").value) || 0)) / 100;
 
     if (parcelas > 1) {
         total30pct *= porcentagemParcelas;
@@ -409,6 +410,8 @@ function reduzTotal() {
 
     // Adiciona total de itens (sem multiplicador)
     total += totalItens;
+
+    total -= (total * (parseFloat(document.getElementById("porcentagem-desconto-input").value) || 0)) / 100;
 
     if (faltam === 1) {
         total = total;
@@ -896,3 +899,84 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+
+//event listener pra ajustar o valor dos campos das porcentagens
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const desconto = document.getElementById("porcentagem-desconto-input");
+    if (!desconto) {
+        console.warn("Elemento #meuCampo não encontrado");
+        return;
+    }
+
+    desconto.addEventListener("blur", () => {
+        let valor = desconto.value;
+        valor = valor.trim();
+        if (valor === "") {
+            desconto.value = "0.00";
+            return;
+        }
+
+        // Substituir vírgula por ponto para parse
+        valor = valor.replace(",", ".");
+        let num = parseFloat(valor);
+        if (isNaN(num)) {
+            desconto.value = "0.00";
+        } else {
+            desconto.value = num.toFixed(2);
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const desconto = document.getElementById("porcentagem-lucro-input");
+    if (!desconto) {
+        console.warn("Elemento #meuCampo não encontrado");
+        return;
+    }
+
+    desconto.addEventListener("blur", () => {
+        let valor = desconto.value;
+        valor = valor.trim();
+        if (valor === "") {
+            desconto.value = "0.00";
+            return;
+        }
+
+        // Substituir vírgula por ponto para parse
+        valor = valor.replace(",", ".");
+        let num = parseFloat(valor);
+        if (isNaN(num)) {
+            desconto.value = "0.00";
+        } else {
+            desconto.value = num.toFixed(2);
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const desconto = document.getElementById("porcentagem-parcela-input");
+    if (!desconto) {
+        console.warn("Elemento #meuCampo não encontrado");
+        return;
+    }
+
+    desconto.addEventListener("blur", () => {
+        let valor = desconto.value;
+        valor = valor.trim();
+        if (valor === "") {
+            desconto.value = "0.00";
+            return;
+        }
+
+        // Substituir vírgula por ponto para parse
+        valor = valor.replace(",", ".");
+        let num = parseFloat(valor);
+        if (isNaN(num)) {
+            desconto.value = "0.00";
+        } else {
+            desconto.value = num.toFixed(2);
+        }
+    });
+});

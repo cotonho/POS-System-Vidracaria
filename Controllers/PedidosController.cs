@@ -88,8 +88,9 @@ namespace VidracariaDoMarcinho.Controllers
                 pedidoAlterado.Gasolina = 0;
                 pedidoAlterado.Silicone = 0;
                 pedidoAlterado.Box = 0;
-                pedidoAlterado.PorcentagemLucro = orcamento.PorcentagemLucro;
-                pedidoAlterado.PorcentagemParcela = orcamento.PorcentagemParcela;
+                pedidoAlterado.PorcentagemLucro = (orcamento.PorcentagemLucro)/100;
+                pedidoAlterado.PorcentagemParcela = (orcamento.PorcentagemParcela)/100;
+                pedidoAlterado.PorcentagemDesconto = (orcamento.PorcentagemDesconto)/100;
                 pedidoAlterado.ParcelasPagas = orcamento.ParcelasPagas;
                 pedidoAlterado.ValorParcelas = (orcamento.ValorParcelas)/100;
                 pedidoAlterado.ValorPago = (orcamento.ValorPago)/100;
