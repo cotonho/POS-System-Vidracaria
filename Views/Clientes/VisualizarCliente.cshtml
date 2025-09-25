@@ -28,7 +28,7 @@
             @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "nome-usuario texto-form" })
 
             <br />
-            @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "nome-usuario-input input-box texto-form" } })
+            @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "nome-usuario-input input-box texto-form", required="required" } })
             <br />
 
             @* CPF *@ 

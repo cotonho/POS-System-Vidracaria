@@ -35,15 +35,15 @@
     <div class="formulario">
 
         <div class="dropdowns">
-        <select id="clienteCPF">
+            <select id="clienteCPF" class="input-box texto-form">
             @foreach (var c in ViewBag.Clientes as List<Cliente>)
             {
                 <option value="@c.CPF">@c.Nome (@c.CPF)</option>
             }
         </select>
 
-        <select id="VidroId" onchange="atualizarCampos(), atualizarPrecoVidro()">
-            @foreach (var m in ViewBag.Material as List<Material>)
+        <select id="VidroId" class="input-box texto-form" onchange="atualizarCampos(), atualizarPrecoVidro()">
+            @foreach (var m in (ViewBag.Material as List<Material>).Where(x => x.Nome.Contains("vidro", StringComparison.OrdinalIgnoreCase)))
             {
                 <option value="@m.Id"
                         data-tipo="@m.Nome"
@@ -53,6 +53,7 @@
                 </option>
             }
         </select>
+
     </div>
 
 
@@ -201,7 +202,8 @@
                         </thead>
 
                         <tbody>
-                            @foreach (var m in ViewBag.Material as List<Material>)
+                            @foreach (var m in (ViewBag.Material as List<Material>)
+                                                        .Where(x => !x.Nome.Contains("vidro", StringComparison.OrdinalIgnoreCase)))
                             {
                                 <tr data-id="@m.Id" data-nome="@m.Nome" data-cor="@m.Cor" data-preco="@m.Preco">
                                     <td>@m.Nome</td>
