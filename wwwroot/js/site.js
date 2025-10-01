@@ -297,8 +297,8 @@ function recalculaTotal() {
     porcentagemParcelas += 1;
 
 
-    total += parseFloat(document.getElementById("MaoDeObra").value) || 0;
-    total30pct = total * porcentagem;
+    total30pct += parseFloat(document.getElementById("MaoDeObra").value) || 0;
+    
 
 
     $("#tabelaSelecionados tbody tr").each(function () {
@@ -306,8 +306,9 @@ function recalculaTotal() {
         let preco = parseFloat(precoText.replace(",", ".")) || 0;
         let qtde = parseInt($(this).find(".qtde").val() || 0);
         total += preco * qtde;
-        total30pct += preco * qtde;
     });
+
+    total30pct += total * porcentagem;
 
     total30pct -= (total30pct * (parseFloat(document.getElementById("porcentagem-desconto-input").value) || 0)) / 100;
 
@@ -377,7 +378,7 @@ function reduzTotal() {
         const altura = $tr.find("td:eq(4)").text().trim();
         const largura = $tr.find("td:eq(5)").text().trim();
 
-        if (altura && largura) {
+        if (altura != "-" && largura != "-") {
             // É vidro
             totalVidros += preco * qtde;
         } else {
