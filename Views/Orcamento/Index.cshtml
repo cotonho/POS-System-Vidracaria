@@ -253,8 +253,11 @@
                 document.getElementById("porcentagem-lucro-input").value = 30.00;
                 document.getElementById("porcentagem-parcela-input").value = 10.00;
                 document.getElementById("porcentagem-desconto-input").value = 0.00;
+                document.getElementById("MaoDeObra").value = 40.00;
                 // atualizarCampos();
                 atualizarPrecoVidro();
+                setInterval(atualizarTabelaMateriais, 5000); // atualiza a cada 5 segundos
+                setInterval(atualizarDropdownVidro, 5000);
             };
 
         </script>

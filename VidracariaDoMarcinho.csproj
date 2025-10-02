@@ -10,21 +10,31 @@
 
 	<ItemGroup>
 		<Compile Remove="NovaPasta\**" />
+		<Compile Remove="Services\**" />
 		<Compile Remove="Views\NovaPasta1\**" />
 		<Compile Remove="wwwroot\NovaPasta\**" />
 		<Content Remove="NovaPasta\**" />
+		<Content Remove="Services\**" />
 		<Content Remove="Views\NovaPasta1\**" />
 		<Content Remove="wwwroot\NovaPasta\**" />
 		<EmbeddedResource Remove="NovaPasta\**" />
+		<EmbeddedResource Remove="Services\**" />
 		<EmbeddedResource Remove="Views\NovaPasta1\**" />
 		<EmbeddedResource Remove="wwwroot\NovaPasta\**" />
 		<None Remove="NovaPasta\**" />
+		<None Remove="Services\**" />
 		<None Remove="Views\NovaPasta1\**" />
 		<None Remove="wwwroot\NovaPasta\**" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Remove="Controllers\InvoiceServiceController.cs" />
+		<Compile Remove="Pages\invoice.cshtml.cs" />
 		<Compile Remove="Views\Materiais\EditarMaterial.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Remove="Pages\invoice.cshtml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -41,6 +51,7 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="PDFsharp-MigraDoc" Version="6.2.2" />
 		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+		<PackageReference Include="Rotativa.AspNetCore" Version="1.4.0" />
 	</ItemGroup>
 
 	<ItemGroup>

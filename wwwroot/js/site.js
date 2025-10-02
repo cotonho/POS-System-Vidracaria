@@ -892,14 +892,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             return;
         }
-
-        // 3) tudo OK → não chamamos preventDefault(), o submit segue normalmente.
-        // Se quiser submeter via JS (sem recarregar), descomente as linhas abaixo:
-        // event.preventDefault();
-        // fetch(...) ou form.submit();
     });
 });
-
 
 //event listener pra ajustar o valor dos campos das porcentagens
 
@@ -981,3 +975,56 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+
+//orcamento
+async function atualizarTabelaMateriais() {
+    const response = await fetch('/Orcamento/GetMateriais');
+    const materiais = await response.json();
+
+    const tbody = document.querySelector('#tabelaMateriais tbody');
+    tbody.innerHTML = ''; // limpa linhas antigas
+
+    materiais.forEach(m => {
+        const tr = document.createElement('tr');
+        tr.setAttribute('data-id', m.Id);
+        tr.setAttribute('data-nome', m.Nome);
+        tr.setAttribute('data-cor', m.Cor);
+        tr.setAttribute('data-preco', m.Preco);
+
+        tr.innerHTML = `
+            <td>${m.Nome}</td>
+            <td>${m.Cor}</td>
+            <td>${m.Preco}</td>
+            <td><button class="btn-add">Adicionar</button></td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+}
+
+
+async function atualizarDropdownVidro() {
+    const response = await fetch('/Orcamento/GetVidros');
+    const vidros = await response.json();
+
+    const select = document.getElementById('VidroId');
+    select.innerHTML = ''; // limpa opções antigas
+
+    vidros.forEach(v => {
+        const option = document.createElement('option');
+        option.value = v.Id;
+        option.setAttribute('data-tipo', v.Nome);
+        option.setAttribute('data-cor', v.Cor);
+        option.setAttribute('data-preco', v.Preco);
+        option.textContent = `${v.Nome} (${v.Cor})`;
+
+        select.appendChild(option);
+    });
+
+    // dispara suas funções de onchange, caso queira atualizar campos automaticamente
+    if (select.onchange) select.onchange();
+}
+
+
+

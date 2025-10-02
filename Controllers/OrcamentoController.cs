@@ -54,6 +54,9 @@ namespace VidracariaDoMarcinho.Controllers
             return View();
         }
 
+        
+
+
         [HttpPost]
         public async Task<JsonResult> Salvar([FromBody] OrcamentoDto dto)
         {
@@ -184,5 +187,35 @@ namespace VidracariaDoMarcinho.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+
+        public IActionResult GetMateriais()
+        {
+            var materiais = _context.Materiais
+                .Where(x => !x.Nome.ToLower().Contains("vidro"))
+                .Select(m => new {
+                    m.Id,
+                    m.Nome,
+                    m.Cor,
+                    m.Preco
+                }).ToList();
+
+            return Json(materiais);
+        }
+
+        public IActionResult GetVidros()
+        {
+            var vidros = _context.Materiais
+                .Where(x => x.Nome.ToLower().Contains("vidro"))
+                .Select(m => new {
+                    m.Id,
+                    m.Nome,
+                    m.Cor,
+                    m.Preco
+                }).ToList();
+
+            return Json(vidros);
+        }
+
     }
 }
