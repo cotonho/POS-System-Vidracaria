@@ -30,31 +30,39 @@
     <br />
 
 
-    
+
 
     <div class="formulario">
 
         <div class="dropdowns">
-            <select id="clienteCPF" class="input-box texto-form">
-            @foreach (var c in ViewBag.Clientes as List<Cliente>)
-            {
-                <option value="@c.CPF">@c.Nome (@c.CPF)</option>
-            }
-        </select>
+            <select id="clienteCPF" class="input-box texto-form" required>
 
-        <select id="VidroId" class="input-box texto-form" onchange="atualizarCampos(), atualizarPrecoVidro()">
-            @foreach (var m in (ViewBag.Material as List<Material>).Where(x => x.Nome.Contains("vidro", StringComparison.OrdinalIgnoreCase)))
-            {
-                <option value="@m.Id"
-                        data-tipo="@m.Nome"
-                        data-cor="@m.Cor"
-                        data-preco="@m.Preco">
-                    @m.Nome (@m.Cor)
-                </option>
-            }
-        </select>
+                <option value="" disabled selected>-----------</option>
 
-    </div>
+                @foreach (var c in ViewBag.Clientes as List<Cliente>)
+                {
+                    <option value="@c.CPF">@c.Nome (@c.CPF)</option>
+                }
+            </select>
+
+            <select id="VidroId" class="input-box texto-form" onchange="atualizarCampos(), atualizarPrecoVidro()">
+                @foreach (var m in (ViewBag.Material as List<Material>).Where(x => x.Nome.Contains("vidro", StringComparison.OrdinalIgnoreCase)))
+                {
+                    <option value="@m.Id"
+                            data-tipo="@m.Nome"
+                            data-cor="@m.Cor"
+                            data-preco="@m.Preco">
+                        @m.Nome (@m.Cor)
+                    </option>
+                }
+            </select>
+
+            <select id="TipoVidro" class="input-box texto-form">
+                <option value="Vidro">Vidro</option>
+                <option value="Ploter">Ploter</option>
+            </select>
+
+        </div>
 
 
         <div>
@@ -112,7 +120,7 @@
 
                         <div class="tabela_vidros">
 
-                            <table id="tabelaVidrosAdicionados" class="display table">
+                            <table id="tabelaVidrosAdicionados" class="display table" stateSave: true>
 
                                 <thead>
                                     <tr>
@@ -240,7 +248,7 @@
                 <p>Valor Total: <span id="valor-total-pct">0.00</span></p>
                 <p>Valor Parcela: <span id="valor-total-parcela">0.00</span></p>
             </div>
-            
+
         </div>
 
         <br />
@@ -259,6 +267,7 @@
                 setInterval(atualizarTabelaMateriais, 5000); // atualiza a cada 5 segundos
                 setInterval(atualizarDropdownVidro, 5000);
             };
+
 
         </script>
     </div>

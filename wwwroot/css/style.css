@@ -215,6 +215,12 @@
     margin-bottom: 20px;
 }
 
+.tabela_vidros {
+    max-height: 30vh;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
 .tabela_selecao_materiais {
     margin-bottom: 15px;
     width: 49%;

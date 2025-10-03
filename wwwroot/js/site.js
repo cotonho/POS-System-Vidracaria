@@ -83,21 +83,16 @@ $(document).ready(function () {
 
 
     //tabela de vidros
-    $(document).on("click", ".btn-add-vidro", function (e) {
-        e.preventDefault(); // Previne o comportamento padrão do botão
+
+
+
+
+    function adicionarVidro() {
+        //e.preventDefault(); // Previne o comportamento padrão do botão
 
         let row = $(this).closest("tr");
         let materialId = $("#VidroId").val(); // pega o valor do select
 
-
-        // se já existe, só aumenta quantidade
-        //let existing = $("#tabelaVidrosAdicionados tbody tr[data-id='" + materialId + "']");
-        //if (existing.length) {
-        //    let q = parseInt(existing.find(".qtde").val() || 0) + 1;
-        //    existing.find(".qtde").val(q);
-        //    recalculaTotal();
-        //    return;
-        //}
 
         let Altura = document.getElementById("altura-input").value,
             Largura = document.getElementById("largura-input").value,
@@ -130,7 +125,38 @@ $(document).ready(function () {
 
         $("#tabelaVidrosAdicionados tbody").append(novaLinhaVidros);
         recalculaTotal();
-    });
+    };
+
+
+    $(document).on("click", ".btn-add-vidro", function (e) {
+        e.preventDefault();
+
+        adicionarVidro();
+
+        let temp = document.getElementById("TipoVidro").value;
+
+        if (temp == "Ploter") {
+            //salva o valor original
+            let idVidro =document.getElementById("VidroId").value
+
+            //troca para o ploter
+            document.getElementById("VidroId").value = "31";
+            atualizarCampos()
+            atualizarPrecoVidro()
+            adicionarVidro();
+
+
+            document.getElementById("VidroId").value = idVidro;
+            atualizarCampos()
+            atualizarPrecoVidro()
+        } 
+
+
+    })
+
+
+
+
 
     // remover linha
     $("#tabelaSelecionados").on("click", ".btn-remover", function (e) {
@@ -298,7 +324,7 @@ function recalculaTotal() {
 
 
     total30pct += parseFloat(document.getElementById("MaoDeObra").value) || 0;
-    
+
 
 
     $("#tabelaSelecionados tbody tr").each(function () {
@@ -390,7 +416,7 @@ function reduzTotal() {
     // Base = total de vidros
     let total = totalVidros;
 
-    
+
     total += parseFloat(document.getElementById("MaoDeObra").value) || 0;
 
 
@@ -1005,11 +1031,15 @@ async function atualizarTabelaMateriais() {
 
 
 async function atualizarDropdownVidro() {
+
+    let val = document.getElementById("VidroId").value;
+
     const response = await fetch('/Orcamento/GetVidros');
     const vidros = await response.json();
 
     const select = document.getElementById('VidroId');
     select.innerHTML = ''; // limpa opções antigas
+    
 
     vidros.forEach(v => {
         const option = document.createElement('option');
@@ -1021,6 +1051,8 @@ async function atualizarDropdownVidro() {
 
         select.appendChild(option);
     });
+
+    document.getElementById("VidroId").value = val;
 
     // dispara suas funções de onchange, caso queira atualizar campos automaticamente
     if (select.onchange) select.onchange();
