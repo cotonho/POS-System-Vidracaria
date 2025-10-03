@@ -1058,5 +1058,41 @@ async function atualizarDropdownVidro() {
     if (select.onchange) select.onchange();
 }
 
+async function atualizarDropdownCliente() {
+    let val = document.getElementById("clienteCPF").value;
+
+    const response = await fetch('/Orcamento/GetClientes');
+    const clientes = await response.json();
+
+    const select = document.getElementById('clienteCPF');
+    select.innerHTML = ''; // limpa opções antigas
+
+    // Recria a opção "-----------"
+    const defaultOption = document.createElement('option');
+    defaultOption.value = "";
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    defaultOption.textContent = "-----------";
+    select.appendChild(defaultOption);
+
+    // Adiciona os clientes
+    clientes.forEach(v => {
+        const option = document.createElement('option');
+        option.value = v.CPF;
+        option.setAttribute('data-nome', v.Nome);
+        option.setAttribute('data-CPF', v.CPF);
+        option.textContent = `${v.Nome} (${v.CPF})`;
+
+        select.appendChild(option);
+    });
+
+    // Restaura valor anterior (caso ainda exista)
+    if (val !== "") {
+        select.value = val;
+    }
+
+    // Dispara evento onchange, se necessário
+    if (select.onchange) select.onchange();
+}
 
 

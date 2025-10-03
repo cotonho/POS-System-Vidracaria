@@ -203,6 +203,23 @@ namespace VidracariaDoMarcinho.Controllers
             return Json(materiais);
         }
 
+        public IActionResult GetClientes()
+        {
+            var clientes = _context.Clientes
+                .Select(m => new {
+                    m.CPF,
+                    m.Nome,
+                    m.Telefone,
+                    m.Cidade,
+                    m.Bairro,
+                    m.CEP,
+                    m.Rua,
+                    m.Numero
+                }).ToList();
+
+            return Json(clientes);
+        }
+
         public IActionResult GetVidros()
         {
             var vidros = _context.Materiais
