@@ -394,72 +394,67 @@ function calculaValorParcela() {
 
 
 function reduzTotal() {
-    let totalVidros = 0;
-    let totalItens = 0;
+    let total = 0;
+    let totalFinal = 0;
+    let precoParcelas = 0;
 
-    // Itera sobre todas as linhas da tabela
+    // Soma os valores da tabela (vidros e itens juntos)
     $("#tabelaItens tbody tr").each(function () {
         const $tr = $(this);
 
-        // Quantidade (coluna 2)
+        // Quantidade
         const qtde = parseInt($tr.find("td:eq(2)").text().trim()) || 0;
 
-        // Preço (coluna 3) - remove R$, pontos e transforma vírgula em ponto
+        // Preço - trata R$ e formatação
         const precoText = $tr.find("td:eq(3)").text().trim();
         const preco = parseFloat(precoText.replace(/[^\d,.-]/g, "").replace(",", ".")) || 0;
 
-        // Altura e Largura (colunas 4 e 5) - para identificar vidros
-        const altura = $tr.find("td:eq(4)").text().trim();
-        const largura = $tr.find("td:eq(5)").text().trim();
-
-        if (altura != "-" && largura != "-") {
-            // É vidro
-            totalVidros += preco * qtde;
-        } else {
-            // É item
-            totalItens += preco * qtde;
-        }
+        total += preco * qtde;
     });
 
-    // Base = total de vidros
-    let total = totalVidros;
+    
+    // Lucro
+    let porcentagem = parseFloat(document.getElementById("porcentagem-lucro-input").value) || 0;
+    porcentagem = (porcentagem / 100) + 1;
+    total *= porcentagem;
 
+    // Desconto
+    let desconto = parseFloat(document.getElementById("porcentagem-desconto-input").value) || 0;
+    total -= (total * desconto) / 100;
 
-    total += parseFloat(document.getElementById("MaoDeObra").value) || 0;
+    // Parcelas
+    let parcelas = parseFloat(document.getElementById("parcelas-input").value) || 1;
+    let porcentagemParcelas = parseFloat(document.getElementById("porcentagem-parcela-input").value) || 0;
+    porcentagemParcelas = (porcentagemParcelas / 100) + 1;
 
-
-    // Multiplicadores aplicam apenas em vidros + extras
-    const parcelas = parseFloat(document.getElementById("parcelas-input")?.value) || 0;
-    const parcelasPagas = parseFloat(document.getElementById("parcelas-pagas-input")?.value) || 0;
-    const faltam = parcelas - parcelasPagas;
-
-    let porcentagem = document.getElementById("porcentagem-lucro-input").value;
-    porcentagem /= 100;
-    porcentagem += 1;
-
-    let porcentagemParcelas = document.getElementById("porcentagem-parcela-input").value;
-    porcentagemParcelas /= 100;
-    porcentagemParcelas += 1;
-
-    total *= porcentagem
-
-    // Adiciona total de itens (sem multiplicador)
-    total += totalItens;
-
-    total -= (total * (parseFloat(document.getElementById("porcentagem-desconto-input").value) || 0)) / 100;
-
-    if (faltam === 1) {
-        total = total;
-    } else {
-        total = total * porcentagemParcelas;
+    if (parcelas > 1) {
+        total *= porcentagemParcelas;
     }
 
-    if (total < 0) { total = 0 };
-    // Atualiza input do total
+    precoParcelas = total / parcelas;
+
+    // Impede valores negativos
+    if (total < 0) total = 0;
+    if (precoParcelas < 0) precoParcelas = 0;
+
+
+    // Adiciona mão de obra
+    total += parseFloat(document.getElementById("MaoDeObra").value) || 0;
+
+    // Atualiza os campos de saída (você pode adaptar os IDs conforme sua interface)
     document.getElementById("total-input").value = total.toFixed(2);
 
-    calculaValorParcela()
+
+
+    // Se quiser exibir outros valores como na outra função:
+    $("#valorTotal").text((total).toFixed(2)); // valor base antes dos acréscimos
+    $("#valor-total-pct").text(total.toFixed(2)); // total com lucro e parcelas
+    $("#valor-total-parcela").text(precoParcelas.toFixed(2)); // valor por parcela
+
+    // Se ainda precisar, pode manter:
+    calculaValorParcela();
 }
+
 
 
 function somarValor(parcela) {

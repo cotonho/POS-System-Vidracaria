@@ -63,7 +63,7 @@
                 <option value="Janela">Janela</option>
             </select>
 
-            <input type="button" name="teste" onclick="atualizarTabelaMateriais()" value="Atualizar Tabelas"/>
+            @* <input type="button" name="teste" onclick="atualizarTabelaMateriais()" value="Atualizar Tabelas"/> *@
 
         </div>
 
@@ -151,6 +151,7 @@
         </div>
 
         <div>
+            
             <div class="tabela_selecao">
                 <div class="item-tabela-selecao">
                     <label class="texto-form">Mão de Obra</label>
@@ -200,6 +201,7 @@
         </div>
 
         <div>
+
             <div class="tabela_selecao">
                 <div class="tabela_selecao_materiais">
                     <table id="tabelaMateriais" class="display table">
@@ -242,6 +244,11 @@
                 </div>
 
             </div>
+
+            <div class="dropdowns">
+                <input type="button" name="atualizaTabela" onclick="atualizarTabelaMateriais()" value="Atualizar Tabelas" />
+            </div>
+
         </div>
         <br />
 
