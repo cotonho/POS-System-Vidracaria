@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vidraçaria do Marcinho</title>
+    <title>Orçamento</title>
 </head>
 
 
@@ -60,7 +60,10 @@
             <select id="TipoVidro" class="input-box texto-form">
                 <option value="Vidro">Vidro</option>
                 <option value="Ploter">Ploter</option>
+                <option value="Janela">Janela</option>
             </select>
+
+            <input type="button" name="teste" onclick="atualizarTabelaMateriais()" value="Atualizar Tabelas"/>
 
         </div>
 
@@ -253,6 +256,8 @@
 
         <br />
         <button id="btnSalvar" data-save-url="@Url.Action("Salvar", "Orcamento")">Salvar Orçamento</button>
+
+        <input type="button" name="teste" onclick="adicionarItem(30)" />
         @* adicionar campos no banco de dados para o custo, valor total, gasolina, silicone, box.  *@
 
         <script>
@@ -264,49 +269,14 @@
                 document.getElementById("MaoDeObra").value = 40.00;
                 // atualizarCampos();
                 atualizarPrecoVidro();
-                setInterval(atualizarTabelaMateriais, 5000); // atualiza a cada 5 segundos
+                // setInterval(atualizarTabelaMateriais, 5000); //atualiza a cada 5 segundos
                 setInterval(atualizarDropdownVidro, 5000);
                 setInterval(atualizarDropdownCliente, 5000);
 
 
-                // function teste() {
-                //     let id = 30;
-                //         let existing = $("#tabelaSelecionados tbody tr[data-id='" + id + "']");
-                //         if (existing.length) {
-                //             let q = parseInt(existing.find(".qtde").val() || 0) + 1;
-                //             existing.find(".qtde").val(q);
-                //             recalculaTotal();
-                //             return;
-                //         }
 
-                //         let nome = row.data("nome"),
-                //             cor = row.data("cor"),
-                //             preco = row.data("preco");
-
-                //         let novaLinha = $("<tr>")
-                //             .attr("data-id", id)
-                //             .append($("<td>").text(nome))
-                //             .append($("<td>").text(cor))
-                //             .append($("<td>").addClass("preco-item").text(preco))
-                //             .append($("<td>").append($("<input>", {
-                //                 type: "number",
-                //                 value: 1,
-                //                 min: 1,
-                //                 class: "qtde"
-                //             })))
-                //             .append($("<td>").append($("<button>", {
-                //                 type: "button",
-                //                 class: "btn-remover"
-                //             }).text("Remover")));
-
-                //         $("#tabelaSelecionados tbody").append(novaLinha);
-                //         recalculaTotal();
-                // }
-
-                // setInterval(teste, 10000)
+                // adicionarItem(30)
             };
-
-
         </script>
     </div>
 
@@ -318,6 +288,7 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+
     }
 
 </body>

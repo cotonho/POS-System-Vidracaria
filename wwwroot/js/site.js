@@ -151,6 +151,14 @@ $(document).ready(function () {
             atualizarPrecoVidro()
         } 
 
+        if (temp == "Janela") {
+
+            let idVidro = document.getElementById("VidroId").value;
+
+            adicionarItem(21);
+            adicionarItem(23);
+        }
+
 
     })
 
@@ -1096,3 +1104,33 @@ async function atualizarDropdownCliente() {
 }
 
 
+function adicionarItem(id) {
+    $.get("/Orcamento/GetItem", { id: id }, function (data) {
+        let existing = $("#tabelaSelecionados tbody tr[data-id='" + data.id + "']");
+        if (existing.length) {
+            let q = parseInt(existing.find(".qtde").val() || 0) + 1;
+            existing.find(".qtde").val(q);
+            recalculaTotal();
+            return;
+        }
+
+        let novaLinha = $("<tr>")
+            .attr("data-id", data.id)
+            .append($("<td>").text(data.nome))
+            .append($("<td>").text(data.cor))
+            .append($("<td>").addClass("preco-item").text(data.preco))
+            .append($("<td>").append($("<input>", {
+                type: "number",
+                value: 1,
+                min: 1,
+                class: "qtde"
+            })))
+            .append($("<td>").append($("<button>", {
+                type: "button",
+                class: "btn-remover"
+            }).text("Remover")));
+
+        $("#tabelaSelecionados tbody").append(novaLinha);
+        recalculaTotal();
+    });
+}
