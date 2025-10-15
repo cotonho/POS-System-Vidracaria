@@ -155,6 +155,11 @@ $(document).ready(function () {
 
             let idVidro = document.getElementById("VidroId").value;
 
+            alturaVidro = ducument.getElementById("altura-input").value;
+            larguraVidro = document.getElementById("largura-input").value;
+
+            //fazer código pra pegar o kit com a altura e largura certa no banco de dados
+
             adicionarItem(21);
             adicionarItem(23);
         }

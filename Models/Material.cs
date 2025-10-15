@@ -12,6 +12,7 @@ namespace VidracariaDoMarcinho.Models
         public string Nome { get; set; }
         public decimal Preco { get; set; }
         public string? Cor { get; set; }
-
+        public int? altura { get; set; }
+        public int? largura { get; set; }
     }
 }

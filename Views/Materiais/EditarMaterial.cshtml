@@ -35,19 +35,33 @@
             @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "nome-material-input input-box texto-form", required="required" } })
             <br />
 
-            @* CPF *@
+            
             @Html.LabelFor(model => model.Cor, htmlAttributes: new { @class = "cor-material texto-form" })
 
             <br />
             @Html.EditorFor(model => model.Cor, new { htmlAttributes = new { @class = "cor-material-input input-box texto-form" , required="required"} })
             <br />
-            @* Telefone *@
+
+            @Html.LabelFor(model => model.largura, htmlAttributes: new { @class = "largura-material texto-form" })
+
+            <br />
+            @Html.EditorFor(model => model.largura, new { htmlAttributes = new { @class = "largura-material-input input-box texto-form" } })
+            <br>
+
+
+            @Html.LabelFor(model => model.altura, htmlAttributes: new { @class = "altura-material texto-form" })
+
+            <br />
+            @Html.EditorFor(model => model.altura, new { htmlAttributes = new { @class = "altura-material-input input-box texto-form" } })
+            <br>
+            
             @Html.LabelFor(model => model.Preco, htmlAttributes: new { @class = "preco-material texto-form" })
 
             <br />
             @Html.EditorFor(model => model.Preco, new { htmlAttributes = new { @class = "preco-material-input input-box texto-form" } })
             <br>
 
+            
 
             <br />
             <button type="submit" class="btn btn-primary rounded-pill px-4">Salvar</button>

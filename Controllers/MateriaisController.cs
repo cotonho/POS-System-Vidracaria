@@ -35,6 +35,8 @@ namespace VidracariaDoMarcinho.Controllers
                 materialAlterado.Nome = material.Nome;
                 materialAlterado.Cor = material.Cor;
                 materialAlterado.Preco = material.Preco;
+                materialAlterado.altura = material.altura;
+                materialAlterado.largura = material.largura;
             }
             else
                 _context.Materiais.Add(material);
