@@ -197,7 +197,9 @@ namespace VidracariaDoMarcinho.Controllers
                     m.Id,
                     m.Nome,
                     m.Cor,
-                    m.Preco
+                    m.Preco,
+                    m.altura,
+                    m.largura
                 }).ToList();
 
             return Json(materiais);

@@ -27,8 +27,9 @@ function atualizarPrecoVidro() {
     const altura = parseFloat(document.querySelector("input[name='altura-input']").value) || 0;
     const largura = parseFloat(document.querySelector("input[name='largura-input']").value) || 0;
 
+
     // calcula a área
-    const area = altura * largura;
+    const area = (altura * largura) / 1000000;
 
     // preço final
     const precoFinal = precoBase * area;
@@ -128,7 +129,7 @@ $(document).ready(function () {
     };
 
 
-    $(document).on("click", ".btn-add-vidro", function (e) {
+    $(document).on("click", ".btn-add-vidro", async function (e) {
         e.preventDefault();
 
         adicionarVidro();
@@ -136,36 +137,74 @@ $(document).ready(function () {
         let temp = document.getElementById("TipoVidro").value;
 
         if (temp == "Ploter") {
-            //salva o valor original
-            let idVidro =document.getElementById("VidroId").value
-
-            //troca para o ploter
-            document.getElementById("VidroId").value = "31";
-            atualizarCampos()
-            atualizarPrecoVidro()
-            adicionarVidro();
-
-
-            document.getElementById("VidroId").value = idVidro;
-            atualizarCampos()
-            atualizarPrecoVidro()
-        } 
-
-        if (temp == "Janela") {
-
             let idVidro = document.getElementById("VidroId").value;
 
-            alturaVidro = ducument.getElementById("altura-input").value;
-            larguraVidro = document.getElementById("largura-input").value;
+            document.getElementById("VidroId").value = "31";
+            atualizarCampos();
+            atualizarPrecoVidro();
+            adicionarVidro();
 
-            //fazer código pra pegar o kit com a altura e largura certa no banco de dados
-
-            adicionarItem(21);
-            adicionarItem(23);
+            document.getElementById("VidroId").value = idVidro;
+            atualizarCampos();
+            atualizarPrecoVidro();
         }
 
+        if (temp == "Janela") {
+            let idVidro = document.getElementById("VidroId").value;
 
-    })
+            // pega os valores em metros e converte para mm
+            let alturaVidro = document.getElementById("altura-input").value;
+            let larguraVidro = document.getElementById("largura-input").value;
+
+            // substitui vírgula por ponto e converte para número
+            alturaVidro = parseFloat(alturaVidro.replace(",", "."));
+            larguraVidro = parseFloat(larguraVidro.replace(",", "."));
+
+            try {
+                const resp = await fetch('/Orcamento/GetMateriais');
+                if (!resp.ok) throw new Error(`Fetch failed: ${resp.status} ${resp.statusText}`);
+
+                const materiais = await resp.json();
+
+                if (!Array.isArray(materiais)) {
+                    console.error("Resposta de materiais não é um array:", materiais);
+                    return;
+                }
+
+                // certifica-se que m.altura e m.largura são números antes de comparar
+                const KitsJanela = materiais.filter(m => {
+                    const nomeOk = String(m.Nome || "").includes("Aluminio Engenharia");
+                    const altura = Number(m.altura);
+                    const largura = Number(m.largura);
+                    const alturaOk = !Number.isNaN(altura) && altura >= alturaVidro;
+                    const larguraOk = !Number.isNaN(largura) && largura > larguraVidro;
+                    return nomeOk && alturaOk && larguraOk;
+                });
+
+                // Encontra o kit com menor altura e desempate por menor largura
+                const kitSelecionado = KitsJanela.reduce((menor, atual) => {
+                    if (!menor) return atual;
+                    const aAlt = Number(atual.altura), mAlt = Number(menor.altura);
+                    const aLar = Number(atual.largura), mLar = Number(menor.largura);
+                    if (aAlt < mAlt) return atual;
+                    if (aAlt === mAlt && aLar < mLar) return atual;
+                    return menor;
+                }, null);
+
+                if (kitSelecionado && kitSelecionado.Id != null) {
+                    adicionarItem(kitSelecionado.Id);
+                    adicionarItem(21);
+                    adicionarItem(23);
+                } else {
+                    console.warn("Nenhum kit compatível encontrado para as dimensões informadas.");
+                }
+
+            } catch (err) {
+                console.error("Erro ao buscar materiais:", err);
+            }
+        }
+    });
+
 
 
 
@@ -1010,6 +1049,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+
+async function devolveJsonMateriais() {
+    const response = await fetch('/Orcamento/GetMateriais');
+    const materiais = await response.json();
+    return materiais;
+}
 
 //orcamento
 async function atualizarTabelaMateriais() {
