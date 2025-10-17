@@ -155,6 +155,7 @@ $(document).ready(function () {
             // pega os valores em metros e converte para mm
             let alturaVidro = document.getElementById("altura-input").value;
             let larguraVidro = document.getElementById("largura-input").value;
+            let corMaterial = document.getElementById("CorVidro").value;
 
             // substitui vírgula por ponto e converte para número
             alturaVidro = parseFloat(alturaVidro.replace(",", "."));
@@ -173,7 +174,7 @@ $(document).ready(function () {
 
                 // certifica-se que m.altura e m.largura são números antes de comparar
                 const KitsJanela = materiais.filter(m => {
-                    const nomeOk = String(m.Nome || "").includes("Aluminio Engenharia");
+                    const nomeOk = (String(m.Nome || "").includes("Aluminio Engenharia")) && (String(m.Cor || "").includes(corMaterial));
                     const altura = Number(m.altura);
                     const largura = Number(m.largura);
                     const alturaOk = !Number.isNaN(altura) && altura >= alturaVidro;
