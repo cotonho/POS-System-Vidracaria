@@ -149,7 +149,7 @@ $(document).ready(function () {
             atualizarPrecoVidro();
         }
 
-        if (temp == "Janela") {
+        if (temp == "Janela 4F") {
             let idVidro = document.getElementById("VidroId").value;
 
             // pega os valores em metros e converte para mm
@@ -174,7 +174,9 @@ $(document).ready(function () {
 
                 // certifica-se que m.altura e m.largura são números antes de comparar
                 const KitsJanela = materiais.filter(m => {
-                    const nomeOk = (String(m.Nome || "").includes("Aluminio Engenharia")) && (String(m.Cor || "").includes(corMaterial));
+                    const nomeOk =
+                        String(m.Nome || "").toLowerCase().includes("aluminio engenharia 4f".toLowerCase()) &&
+                        String(m.Cor || "").toLowerCase().includes(corMaterial.toLowerCase());
                     const altura = Number(m.altura);
                     const largura = Number(m.largura);
                     const alturaOk = !Number.isNaN(altura) && altura >= alturaVidro;
@@ -192,10 +194,11 @@ $(document).ready(function () {
                     return menor;
                 }, null);
 
+                adicionarItem(21);
+                adicionarItem(23);
+
                 if (kitSelecionado && kitSelecionado.Id != null) {
                     adicionarItem(kitSelecionado.Id);
-                    adicionarItem(21);
-                    adicionarItem(23);
                 } else {
                     console.warn("Nenhum kit compatível encontrado para as dimensões informadas.");
                 }
