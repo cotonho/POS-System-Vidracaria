@@ -149,6 +149,19 @@ $(document).ready(function () {
             atualizarPrecoVidro();
         }
 
+        if (temp == "Jato de Areia") {
+            let idVidro = document.getElementById("VidroId").value;
+
+            document.getElementById("VidroId").value = "48";
+            atualizarCampos();
+            atualizarPrecoVidro();
+            adicionarVidro();
+
+            document.getElementById("VidroId").value = idVidro;
+            atualizarCampos();
+            atualizarPrecoVidro();
+        }
+
         if (temp == "Janela 4F") {
             let idVidro = document.getElementById("VidroId").value;
 
@@ -205,6 +218,64 @@ $(document).ready(function () {
 
             } catch (err) {
                 console.error("Erro ao buscar materiais:", err);
+            }
+        }
+
+        if (temp == "Portao Maior") {
+            let idVidro = document.getElementById("VidroId").value;
+
+            // pega os valores em metros e converte para mm
+            let alturaVidro = document.getElementById("altura-input").value;
+            let larguraVidro = document.getElementById("largura-input").value;
+            let corMaterial = document.getElementById("CorVidro").value;
+
+            // substitui vírgula por ponto e converte para número
+            alturaVidro = parseFloat(alturaVidro.replace(",", "."));
+            larguraVidro = parseFloat(larguraVidro.replace(",", "."));
+
+            adicionarItem(45);
+            adicionarItem(45);
+
+            for (let i = 0; i < (alturaVidro / 500 + larguraVidro / 500); i++) {
+                adicionarItem(37);
+            }
+        }
+
+        if (temp == "Janela Pivotante") {
+            // pega os valores em metros e converte para mm
+            let alturaVidro = document.getElementById("altura-input").value;
+            let larguraVidro = document.getElementById("largura-input").value;
+            let corMaterial = document.getElementById("CorVidro").value;
+
+            // substitui vírgula por ponto e converte para número
+            alturaVidro = parseFloat(alturaVidro.replace(",", "."));
+            larguraVidro = parseFloat(larguraVidro.replace(",", "."));
+
+            if (corMaterial == "Cromado") {
+                adicionarItem(47);
+            } else { adicionarItem(46); }
+
+            for (let i = 0; i < (alturaVidro / 500 + larguraVidro / 500); i++) {
+                adicionarItem(37);
+            }
+        }
+
+        if (temp == "Porta Pivotante") {
+            // pega os valores em metros e converte para mm
+            let alturaVidro = document.getElementById("altura-input").value;
+            let larguraVidro = document.getElementById("largura-input").value;
+            let corMaterial = document.getElementById("CorVidro").value;
+
+            // substitui vírgula por ponto e converte para número
+            alturaVidro = parseFloat(alturaVidro.replace(",", "."));
+            larguraVidro = parseFloat(larguraVidro.replace(",", "."));
+
+
+            adicionarItem(49);
+            adicionarItem(27);
+
+            for (let i = 0; i < (alturaVidro / 500 + larguraVidro / 500); i++) {
+                adicionarItem(37);
             }
         }
     });
@@ -460,7 +531,7 @@ function reduzTotal() {
         total += preco * qtde;
     });
 
-    
+
     // Lucro
     let porcentagem = parseFloat(document.getElementById("porcentagem-lucro-input").value) || 0;
     porcentagem = (porcentagem / 100) + 1;
@@ -1096,7 +1167,7 @@ async function atualizarDropdownVidro() {
 
     const select = document.getElementById('VidroId');
     select.innerHTML = ''; // limpa opções antigas
-    
+
 
     vidros.forEach(v => {
         const option = document.createElement('option');
