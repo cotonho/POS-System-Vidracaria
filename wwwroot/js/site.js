@@ -149,6 +149,7 @@ $(document).ready(function () {
             atualizarPrecoVidro();
         }
 
+
         if (temp == "Jato de Areia") {
             let idVidro = document.getElementById("VidroId").value;
 
@@ -161,6 +162,67 @@ $(document).ready(function () {
             atualizarCampos();
             atualizarPrecoVidro();
         }
+
+
+        if (temp == "Janela 2F") {
+            let idVidro = document.getElementById("VidroId").value;
+
+            // pega os valores em metros e converte para mm
+            let alturaVidro = document.getElementById("altura-input").value;
+            let larguraVidro = document.getElementById("largura-input").value;
+            let corMaterial = document.getElementById("CorVidro").value;
+
+            // substitui vírgula por ponto e converte para número
+            alturaVidro = parseFloat(alturaVidro.replace(",", "."));
+            larguraVidro = parseFloat(larguraVidro.replace(",", "."));
+
+            try {
+                const resp = await fetch('/Orcamento/GetMateriais');
+                if (!resp.ok) throw new Error(`Fetch failed: ${resp.status} ${resp.statusText}`);
+
+                const materiais = await resp.json();
+
+                if (!Array.isArray(materiais)) {
+                    console.error("Resposta de materiais não é um array:", materiais);
+                    return;
+                }
+
+                // certifica-se que m.altura e m.largura são números antes de comparar
+                const KitsJanela = materiais.filter(m => {
+                    const nomeOk =
+                        String(m.Nome || "").toLowerCase().includes("aluminio engenharia 2f".toLowerCase()) &&
+                        String(m.Cor || "").toLowerCase().includes(corMaterial.toLowerCase());
+                    const altura = Number(m.altura);
+                    const largura = Number(m.largura);
+                    const alturaOk = !Number.isNaN(altura) && altura >= alturaVidro;
+                    const larguraOk = !Number.isNaN(largura) && largura > larguraVidro;
+                    return nomeOk && alturaOk && larguraOk;
+                });
+
+                // Encontra o kit com menor altura e desempate por menor largura
+                const kitSelecionado = KitsJanela.reduce((menor, atual) => {
+                    if (!menor) return atual;
+                    const aAlt = Number(atual.altura), mAlt = Number(menor.altura);
+                    const aLar = Number(atual.largura), mLar = Number(menor.largura);
+                    if (aAlt < mAlt) return atual;
+                    if (aAlt === mAlt && aLar < mLar) return atual;
+                    return menor;
+                }, null);
+
+                adicionarItem(21);
+                adicionarItem(23);
+
+                if (kitSelecionado && kitSelecionado.Id != null) {
+                    adicionarItem(kitSelecionado.Id);
+                } else {
+                    console.warn("Nenhum kit compatível encontrado para as dimensões informadas.");
+                }
+
+            } catch (err) {
+                console.error("Erro ao buscar materiais:", err);
+            }
+        }
+
 
         if (temp == "Janela 4F") {
             let idVidro = document.getElementById("VidroId").value;
@@ -221,6 +283,135 @@ $(document).ready(function () {
             }
         }
 
+
+        if (temp == "Porta 2F") {
+            let idVidro = document.getElementById("VidroId").value;
+
+            // pega os valores em metros e converte para mm
+            let alturaVidro = document.getElementById("altura-input").value;
+            let larguraVidro = document.getElementById("largura-input").value;
+            let corMaterial = document.getElementById("CorVidro").value;
+
+            // substitui vírgula por ponto e converte para número
+            alturaVidro = parseFloat(alturaVidro.replace(",", "."));
+            larguraVidro = parseFloat(larguraVidro.replace(",", "."));
+
+            try {
+                const resp = await fetch('/Orcamento/GetMateriais');
+                if (!resp.ok) throw new Error(`Fetch failed: ${resp.status} ${resp.statusText}`);
+
+                const materiais = await resp.json();
+
+                if (!Array.isArray(materiais)) {
+                    console.error("Resposta de materiais não é um array:", materiais);
+                    return;
+                }
+
+
+
+                //ADICIONR O NOME DO KIT ALUMINIO 2F QUANDO POSSÍVEL
+
+                //// certifica-se que m.altura e m.largura são números antes de comparar
+                //const KitsJanela = materiais.filter(m => {
+                //    const nomeOk =
+                //        String(m.Nome || "").toLowerCase().includes("aluminio engenharia 4f".toLowerCase()) &&
+                //        String(m.Cor || "").toLowerCase().includes(corMaterial.toLowerCase());
+                //    const altura = Number(m.altura);
+                //    const largura = Number(m.largura);
+                //    const alturaOk = !Number.isNaN(altura) && altura >= alturaVidro;
+                //    const larguraOk = !Number.isNaN(largura) && largura > larguraVidro;
+                //    return nomeOk && alturaOk && larguraOk;
+                //});
+
+                //// Encontra o kit com menor altura e desempate por menor largura
+                //const kitSelecionado = KitsJanela.reduce((menor, atual) => {
+                //    if (!menor) return atual;
+                //    const aAlt = Number(atual.altura), mAlt = Number(menor.altura);
+                //    const aLar = Number(atual.largura), mLar = Number(menor.largura);
+                //    if (aAlt < mAlt) return atual;
+                //    if (aAlt === mAlt && aLar < mLar) return atual;
+                //    return menor;
+                //}, null);
+
+                adicionarItem(27); //Puxador
+                //adicionarItem(); //Fechadura (KIT 10) V/A
+
+                if (kitSelecionado && kitSelecionado.Id != null) {
+                    adicionarItem(kitSelecionado.Id);
+                } else {
+                    console.warn("Nenhum kit compatível encontrado para as dimensões informadas.");
+                }
+
+            } catch (err) {
+                console.error("Erro ao buscar materiais:", err);
+            }
+        }
+
+
+        if (temp == "Porta 4F") {
+            let idVidro = document.getElementById("VidroId").value;
+
+            // pega os valores em metros e converte para mm
+            let alturaVidro = document.getElementById("altura-input").value;
+            let larguraVidro = document.getElementById("largura-input").value;
+            let corMaterial = document.getElementById("CorVidro").value;
+
+            // substitui vírgula por ponto e converte para número
+            alturaVidro = parseFloat(alturaVidro.replace(",", "."));
+            larguraVidro = parseFloat(larguraVidro.replace(",", "."));
+
+            try {
+                const resp = await fetch('/Orcamento/GetMateriais');
+                if (!resp.ok) throw new Error(`Fetch failed: ${resp.status} ${resp.statusText}`);
+
+                const materiais = await resp.json();
+
+                if (!Array.isArray(materiais)) {
+                    console.error("Resposta de materiais não é um array:", materiais);
+                    return;
+                }
+
+
+
+                //ADICIONR O NOME DO KIT ALUMINIO 4F QUANDO POSSÍVEL
+
+                //// certifica-se que m.altura e m.largura são números antes de comparar
+                //const KitsJanela = materiais.filter(m => {
+                //    const nomeOk =
+                //        String(m.Nome || "").toLowerCase().includes("aluminio engenharia 4f".toLowerCase()) &&
+                //        String(m.Cor || "").toLowerCase().includes(corMaterial.toLowerCase());
+                //    const altura = Number(m.altura);
+                //    const largura = Number(m.largura);
+                //    const alturaOk = !Number.isNaN(altura) && altura >= alturaVidro;
+                //    const larguraOk = !Number.isNaN(largura) && largura > larguraVidro;
+                //    return nomeOk && alturaOk && larguraOk;
+                //});
+
+                //// Encontra o kit com menor altura e desempate por menor largura
+                //const kitSelecionado = KitsJanela.reduce((menor, atual) => {
+                //    if (!menor) return atual;
+                //    const aAlt = Number(atual.altura), mAlt = Number(menor.altura);
+                //    const aLar = Number(atual.largura), mLar = Number(menor.largura);
+                //    if (aAlt < mAlt) return atual;
+                //    if (aAlt === mAlt && aLar < mLar) return atual;
+                //    return menor;
+                //}, null);
+
+                adicionarItem(27); //Puxador
+                //adicionarItem(); //Fechadura (KIT 9) V/V
+
+                if (kitSelecionado && kitSelecionado.Id != null) {
+                    adicionarItem(kitSelecionado.Id);
+                } else {
+                    console.warn("Nenhum kit compatível encontrado para as dimensões informadas.");
+                }
+
+            } catch (err) {
+                console.error("Erro ao buscar materiais:", err);
+            }
+        }
+
+
         if (temp == "Portao Maior") {
             let idVidro = document.getElementById("VidroId").value;
 
@@ -241,6 +432,7 @@ $(document).ready(function () {
             }
         }
 
+
         if (temp == "Janela Pivotante") {
             // pega os valores em metros e converte para mm
             let alturaVidro = document.getElementById("altura-input").value;
@@ -260,6 +452,7 @@ $(document).ready(function () {
             }
         }
 
+
         if (temp == "Porta Pivotante") {
             // pega os valores em metros e converte para mm
             let alturaVidro = document.getElementById("altura-input").value;
@@ -278,6 +471,46 @@ $(document).ready(function () {
                 adicionarItem(37);
             }
         }
+
+        if (temp == "2 Portas Pivotantes") {
+            // pega os valores em metros e converte para mm
+            let alturaVidro = document.getElementById("altura-input").value;
+            let larguraVidro = document.getElementById("largura-input").value;
+            let corMaterial = document.getElementById("CorVidro").value;
+
+            // substitui vírgula por ponto e converte para número
+            alturaVidro = parseFloat(alturaVidro.replace(",", "."));
+            larguraVidro = parseFloat(larguraVidro.replace(",", "."));
+
+
+            //adicionarItem();//2 KIT 03
+            //adicionarItem();// contra fechadura (1531)
+            adicionarItem(27);
+            adicionarItem(27);
+
+
+            for (let i = 0; i < (alturaVidro / 500 + larguraVidro / 500); i++) {
+                adicionarItem(37);
+            }
+        }
+
+        if (temp == "Bascula") {
+            // pega os valores em metros e converte para mm
+            let alturaVidro = document.getElementById("altura-input").value;
+            let larguraVidro = document.getElementById("largura-input").value;
+            let corMaterial = document.getElementById("CorVidro").value;
+
+            // substitui vírgula por ponto e converte para número
+            alturaVidro = parseFloat(alturaVidro.replace(",", "."));
+            larguraVidro = parseFloat(larguraVidro.replace(",", "."));
+
+            //adicionarItem(); // KIT 06
+
+            for (let i = 0; i < (alturaVidro / 500 + larguraVidro / 500); i++) {
+                adicionarItem(37);
+            }
+        }
+
     });
 
 
