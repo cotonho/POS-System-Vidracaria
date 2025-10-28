@@ -190,7 +190,7 @@ $(document).ready(function () {
                 // certifica-se que m.altura e m.largura são números antes de comparar
                 const KitsJanela = materiais.filter(m => {
                     const nomeOk =
-                        String(m.Nome || "").toLowerCase().includes("aluminio engenharia 2f".toLowerCase()) &&
+                        String(m.Nome || "").toLowerCase().includes("Aluminio Engenharia 2F".toLowerCase()) &&
                         String(m.Cor || "").toLowerCase().includes(corMaterial.toLowerCase());
                     const altura = Number(m.altura);
                     const largura = Number(m.largura);
