@@ -74,3 +74,6 @@ Os vidros adicionados são exibidos temporariamente em uma **DataTable**, permit
 Os materiais disponíveis no banco de dados podem ser escolhidos na tabela da esquerda e adicionados à tabela da direita, que funciona como uma lista de compras.  
 É possível alterar a quantidade de produtos ou removê-los.  
 Ao final da página, são exibidos os valores do pedido, incluindo o custo total dos materiais para a loja e o valor total para o cliente, tanto à vista quanto parcelado.
+
+### Como os orçamentos são salvos
+<img width="983" height="634" alt="image" src="https://github.com/user-attachments/assets/15ff2d0c-4d9a-4fd2-a0e1-b1907208865b" />
