@@ -7,7 +7,10 @@ namespace VidracariaDoMarcinho.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<Cliente> Clientes { get; set; }
-        //public DbSet<pedido> pedidos { get; set; }
-        //public DbSet<material> materiais { get; set; }
+        public DbSet<Material> Materiais { get; set; }
+        public DbSet<Orcamento> Orcamentos { get; set; }
+        public DbSet<OrcamentoItem> OrcamentoItens { get; set; }
+        public DbSet<Vidro> Vidros { get; set; }
+
     }
 }

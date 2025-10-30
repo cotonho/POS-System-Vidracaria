@@ -22,126 +22,63 @@
 <body>
 
     <!-- barra superior     -->
-    <div class="borda_superior"></div>
-
-    <div class="botoes_line">
-        <!-- Botão para acessar clientes -->
-        <div class="botao" id="botao_clientes">
-            <img src="/images/user.png" alt="icone usuário" class="icons">
-            <p class="text_botao">Clientes</p>
-        </div>
-
-        <!-- Botão para acessar pedidos -->
-        <div class="botao">
-            <img src="/images/order.png" alt="icone usuário" class="icons">
-            <p class="text_botao">Pedidos</p>
-        </div>
-
-        <!-- Botão para acessar orçamentos -->
-        <div class="botao">
-            <img src="/images/budget.png" alt="icone usuário" class="icons">
-            <p class="text_botao">Orçamento</p>
-        </div>
-
-        <!-- Botão para acessar materiais -->
-        <div class="botao">
-            <img src="/images/budget.png" alt="icone usuário" class="icons">
-            <p class="text_botao">Materiais</p>
-        </div>
+    <div class="borda_superior">
+        <a class="style-botao-a" href="@Url.Action("Index", "Home")">
+            <div class="botao borda_superior_botao"><p class="texto_botao_borda_superior">Home</p></div>
+        </a>
     </div>
 
+    <div class="painel_clientes">
 
-    <!-- painel para os clientes -->
-    <div id="painel" class="painel">
-        <button class="fechar" id="fechar">X</button>
+        <table id="tabelaClientes" class="display table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
 
-        <div class="painel_clientes">
-
-            <table id="tabelaClientes" class="display table">
-                <thead>
+            <tbody>
+                @foreach (Cliente cliente in Model)
+                {
                     <tr>
-                        <th>Nome</th>
-                        <th>CPF</th>
-                        <th>Telefone</th>
-                        <th></th>
-                        <th></th>
+                        <td>@cliente.Nome</td>
+                        <td>@cliente.CPF</td>
+                        <td>@cliente.Telefone</td>
+                        <td>
+                            <a class="hyperlink_tabela" href="@Url.Action("VisualizarCliente", "Clientes", new { cpf = @cliente.CPF })">
+                                <div class="botao_tabela botao">Visualizar Cliente</div>
+                            </a>
+                        </td>
+                        <td>
+                            <button class="btn-remover-cliente" data-cpf="@cliente.CPF">Remover</button>
+                        </td>
+
                     </tr>
-                </thead>
-
-                <tbody>
-                    @foreach (Cliente cliente in Model)
-                    {
-                        <tr>
-                            <td>@cliente.Nome</td>
-                            <td>@cliente.CPF</td>
-                            <td>@cliente.Telefone</td>
-                            <td>
-                                <a class="hyperlink_tabela" href="@Url.Action("VisualizarCliente", "Clientes", new { cpf = @cliente.CPF })">
-                                    <div class="botao_tabela">Visualizar Cliente</div>
-                                </a>
-                            </td>
-                            <td>
-                                <a class="hyperlink_tabela" href="@Url.Action("DeleteUsuario", "Clientes", new { cpf = cliente.CPF })">
-                                    <div class="botao_tabela">Remover</div>
-                                </a>
-                            </td>
-                        </tr>
-                    }
+                }
 
 
-                </tbody>
+            </tbody>
 
-            </table>
+        </table>
 
-            <a class="hyperlink_tabela" href="@Url.Action("VisualizarCliente", "Clientes")">
-                <div class="botao_tabela">Adicionar Cliente</div>
-            </a>
-
-        </div>
+        <a class="hyperlink_tabela" href="@Url.Action("VisualizarCliente", "Clientes")">
+            <div class="botao_tabela botao">Adicionar Cliente</div>
+        </a>
 
     </div>
+
+    @*   </div> *@
     @section Scripts {
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
 
-        @* <script>
-            $(document).ready(function () {
-                    $('#tabelaClientes').DataTable({
-                        "ajax": {
-                        "url": "/Clientes/GetClientes",
-                        "type": "GET",
-                        "dataSrc": "data",
-                        "layout": {
-                            "topStart": {
-                                "buttons": ['Editar', 'Remover']
-                            }
-                        }
-                    },
-                    "columns": [
-                        { "data": "Nome" },
-                        { "data": "CPF" },
-                        { "data": "Telefone" },
-                        { 
-                            "button": null,
-                            "orderable": false,
-                            "serchable": false,
-                            "render": function (data, type, row) {
-                                return `<button class="botao_datatable" onclick="editarCliente('${row.cpf}')">Editar</button>`;
-                            }
-                        },
-                        {
-                            "button": null,
-                            "orderable": false,
-                            "serchable": false,
-                            "render": function (data, type, row) {
-                                return `<button class="botao_datatable" onclick="removerCliente('${row.cpf}')">Remover</button>`;
-                            }
-                        }
-                    ]
-                });
-            });
-        </script> *@
     }
 </body>
 

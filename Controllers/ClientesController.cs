@@ -55,9 +55,10 @@ namespace VidracariaDoMarcinho.Controllers
         }
 
         //lembrar de adicionar o Sweetalert no fim do projeto para deixar o site mais responsivo
-        public JsonResult DeleteUsuario(Cliente cliente)
+        [HttpPost]
+        public JsonResult DeleteUsuario(string CPF)
         {
-            var clienteParaApagar = _context.Clientes?.FirstOrDefault(c => c.CPF == cliente.CPF);
+            var clienteParaApagar = _context.Clientes?.FirstOrDefault(c => c.CPF == CPF);
             if (clienteParaApagar != null)
             {
                 _context.Clientes.Remove(clienteParaApagar);
@@ -65,10 +66,11 @@ namespace VidracariaDoMarcinho.Controllers
                 return Json(new { success = true, message = "Cliente deletado com sucesso!" });
             }
             else
-                return Json(new { success = false, message = "O cliente não foi deletado!" });
-
-            _context.SaveChanges();
+            {
+                return Json(new { success = false, message = "O cliente não foi encontrado!" });
+            }
         }
+
 
     }
 }

@@ -1,0 +1,79 @@
+﻿@model Material
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidraçaria do Marcinho - Detalhes do Material</title>
+
+    <link rel="stylesheet" href="~/css/reset.css">
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body class="bg-light">
+
+    <div class="borda_superior">
+        <a class="style-botao-a" href="@Url.Action("Index", "Home")">
+            <div class="botao borda_superior_botao"><p class="texto_botao_borda_superior">Home</p></div>
+        </a>
+    </div>
+
+    <div class="formulario">
+        @using (@Html.BeginForm("CrudMaterial", "Materiais", FormMethod.Post, new { id = "form-crud-material" }))
+        {
+
+            @* Fazer isso em todos campos *@
+            @Html.LabelFor(model => model.Id, htmlAttributes: new { @class = "id-material texto-form" })
+
+            <br />
+            @Html.TextBoxFor(model => model.Id, new { @class = "id-material-input input-box texto-form", @readonly = "readonly" })
+            <br />
+
+            @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "nome-material texto-form" })
+
+            <br />
+            @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "nome-material-input input-box texto-form", required="required" } })
+            <br />
+
+            
+            @Html.LabelFor(model => model.Cor, htmlAttributes: new { @class = "cor-material texto-form" })
+
+            <br />
+            @Html.EditorFor(model => model.Cor, new { htmlAttributes = new { @class = "cor-material-input input-box texto-form" , required="required"} })
+            <br />
+
+            @Html.LabelFor(model => model.largura, htmlAttributes: new { @class = "largura-material texto-form" })
+
+            <br />
+            @Html.EditorFor(model => model.largura, new { htmlAttributes = new { @class = "largura-material-input input-box texto-form" } })
+            <br>
+
+
+            @Html.LabelFor(model => model.altura, htmlAttributes: new { @class = "altura-material texto-form" })
+
+            <br />
+            @Html.EditorFor(model => model.altura, new { htmlAttributes = new { @class = "altura-material-input input-box texto-form" } })
+            <br>
+            
+            @Html.LabelFor(model => model.Preco, htmlAttributes: new { @class = "preco-material texto-form" })
+
+            <br />
+            @Html.EditorFor(model => model.Preco, new { htmlAttributes = new { @class = "preco-material-input input-box texto-form" } })
+            <br>
+
+            
+
+            <br />
+            <button type="submit" class="btn btn-primary rounded-pill px-4">Salvar</button>
+
+            @* <div class="text-center campo-de-texto">
+                <a href="@Url.Action("Index", "Clientes")" class="btn btn-secondary rounded-pill px-4">Voltar</a>
+                <a href="@Url.Action("EditarCliente", "Clientes", new { cpf = @Model.CPF })" class="btn btn-warning rounded-pill px-4">Editar</a>
+            </div> *@
+        }
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,211 @@
+﻿@using System.Globalization
+@model VidracariaDoMarcinho.Models.Orcamento
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidraçaria do Marcinho</title>
+    <link rel="stylesheet" href="~/css/reset.css">
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+
+<body>
+    <div class="borda_superior">
+        <a class="style-botao-a" href="@Url.Action("Index", "Home")">
+            <div class="botao borda_superior_botao"><p class="texto_botao_borda_superior">Home</p></div>
+        </a>
+    </div>
+
+    <div class="formulario-simplificado">
+        @using (@Html.BeginForm("CrudPedido", "Pedidos", FormMethod.Post, new { id = "form-crud-pedido" }))
+        {
+            <!-- Coluna Esquerda (grid column 1) -->
+            <div class="coluna-esquerda">
+                <div class="grupo-campos">
+                    <h3>Informações do Pedido</h3>
+                    <div class="campo-linha">
+                        @Html.LabelFor(model => model.Id, "Nº Pedido", new { @class = "texto-form" })
+                        @Html.TextBoxFor(model => model.Id, new { @class = "id-pedido-input input-box texto-form", @readonly = "readonly" })
+                    </div>
+                    <div class="campo-linha">
+                        @Html.LabelFor(model => model.Status, new { @class = "texto-form" })
+                        @Html.DropDownListFor(model => model.Status, (List<SelectListItem>)ViewBag.StatusOptions, new { @class = "status-pedido-input input-box texto-form", @id = "Status" })
+                    </div>
+                </div>
+
+                <div class="grupo-campos">
+                    <h3>Dados do Cliente</h3>
+                    <div class="campo-linha">
+                        @Html.LabelFor(model => model.Cliente.Nome, new { @class = "texto-form" })
+                        @Html.TextBoxFor(model => model.Cliente.Nome, new { @class = "cliente-pedido-input input-box texto-form", @readonly = "readonly" })
+                    </div>
+                    <div class="campo-linha">
+                        @Html.LabelFor(model => model.Cliente.CPF, new { @class = "texto-form" })
+                        @Html.TextBoxFor(model => model.Cliente.CPF, new { @class = "cpf-cliente-input input-box texto-form", @readonly = "readonly" })
+                    </div>
+                    <div class="campo-linha">
+                        @Html.LabelFor(model => model.Cliente.Telefone, new { @class = "texto-form" })
+                        @Html.TextBoxFor(model => model.Cliente.Telefone, new { @class = "cliente-pedido-input input-box texto-form", @readonly = "readonly" })
+                    </div>
+                    <div class="campo-linha">
+                        <label class="texto-form">Endereço</label>
+                        <input type="text" class="endereco input-box texto-form" readonly
+                               value="@($"{Model.Cliente.Rua}, {Model.Cliente.Numero}, {Model.Cliente.Bairro}, {Model.Cliente.Cidade} - {Model.Cliente.CEP}")" />
+                    </div>
+                </div>
+
+                <div class="grupo-campos">
+                    <h3>Local de Instalação</h3>
+                    <div class="campo-linha">
+                        @Html.TextBoxFor(model => model.LocalInstalacao, new { @class = "endereco instalacao-input input-box texto-form", placeholder = "Local de instalação", @id = "instalacao-input" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna Direita (grid column 2) -->
+            <div class="coluna-direita">
+                <div class="grupo-campos">
+                    <h3>Valores e Pagamentos</h3>
+                    <div class="campo-linha">
+                        @Html.LabelFor(model => model.Total, new { @class = "texto-form" })
+                        @Html.TextBoxFor(model => model.Total, new { @class = "total-input input-box texto-form", @id = "total-input", type = "number", step = "0.01", onchange = "calculaValorParcela()" })
+                    </div>
+                    <div class="campo-linha">
+                        @Html.LabelFor(model => model.Parcelas, new { @class = "texto-form" })
+                        @Html.TextBoxFor(model => model.Parcelas, new { @class = "input-box texto-form", @id = "parcelas-input", @readonly = "readonly" })
+                    </div>
+                    <div class="campo-linha">
+                        @Html.LabelFor(model => model.ParcelasPagas, "Parcelas Pagas", new { @class = "texto-form" })
+                        @Html.TextBoxFor(model => model.ParcelasPagas, new { @class = "parcelas-pagas-input input-box texto-form", @id = "parcelas-pagas-input", type = "number", onchange = "calculaValorParcela()", min="0" })
+                    </div>
+                    <div class="campo-linha">
+                        @Html.LabelFor(model => model.ValorParcelas, "Valor Parcelas", new { @class = "texto-form" })
+                        @Html.TextBoxFor(model => model.ValorParcelas, new { @class = "valor-parcelas-input input-box texto-form", @id = "valor-parcelas-input", @readonly = "readonly" })
+                    </div>
+
+                    <div class="acoes-pagamento">
+                        <div class="campo-linha">
+                            @Html.LabelFor(model => model.ValorPago, "Valor Pago", new { @class = "texto-form" })
+                            @Html.TextBoxFor(model => model.ValorPago, new { @class = "valor-pago-input input-box texto-form", @id = "valor-pago-input", type = "number", step = "0.01", onchange = "calculaValorParcela()", min="0" })
+                            <button type="button" class="btn-acao btn-parcela" onclick="somarValor(1)">Pagar Parcela</button>
+                        </div>
+
+                        <div class="campo-linha">
+                            <label class="texto-form">Adicionar Valor</label>
+                            <input type="number" id="adicionar-valor" class="input-box texto-form" step="0.01" value="0" />
+                            <button type="button" class="btn-acao btn-adicionar" onclick="somarValor(0)">Adicionar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grupo-campos">
+                    <h3>Materiais Adicionais</h3>
+                        <div class="campo-linha">
+                            <div class="campo-linha">
+                                <label class="texto-form">Mão de Obra</label>
+                                @Html.TextBoxFor(model => model.MaoDeObra, new {
+                                @class = "MaoDeObra-input input-box texto-form",
+                                                @id = "MaoDeObra",
+                                                    type = "number",
+                                                    step = "0.01",
+                                                onchange = "reduzTotal(); formatarValor(this);",
+                                                min="0"
+                                })
+                        </div>
+                    </div>
+                    <div class="campo-linha">
+                        <label class="texto-form">Porcentagem de lucro</label>
+                    @Html.TextBoxFor(model => model.PorcentagemLucro, new { @class = "porcentagem-lucro-input input-box texto-form", @id = "porcentagem-lucro-input", type = "number", step = "0.01", onchange = "calculaValorParcela()", min = "0" })
+                    @* @Html.TextBoxFor(model => model.PorcentagemLucro, new { @class = "porcentagem-lucro-input input-box texto-form", @id = "porcentagem-lucro-input", type = "number", step = "1", onchange = "calculaValorParcela()" }) *@
+                    </div>
+
+                    <div class="campo-linha">
+                        <label class="texto-form">Porcentagem de Desconto</label>
+                    @Html.TextBoxFor(model => model.PorcentagemDesconto, new { @class = "porcentagem-desconto-input input-box texto-form", @id = "porcentagem-desconto-input", type = "number", step = "0.01", onchange = "reduzTotal()", min = "0" })
+                    </div>
+
+                    <div class="campo-linha">
+                        <label class ="texto-form">Porcentagem Adicional do Valor Parcelado</label>
+                    @Html.TextBoxFor(model => model.PorcentagemParcela, new {
+                        @class = "porcentagem-parcela-input input-box texto-form", @id = "porcentagem-parcela-input",
+                                        type = "number", step = "0.01", onchange = "calculaValorParcela()", min = "0" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Observações (ocupa toda largura) -->
+            <div class="grupo-campos campo-observacoes">
+                <h3>Observações</h3>
+                <div class="campo-linha">
+                    @Html.TextAreaFor(model => model.Observacoes, new { @class = "textarea-observacoes texto-form", @id = "obs-orcamento-input", rows = "4", placeholder = "Digite suas observações aqui..." })
+                </div>
+            </div>
+
+            <!-- Tabela (ocupa toda largura) -->
+            <div class="tabela-container grupo-campos">
+                <h3>Itens do Pedido</h3>
+                <table id="tabelaItens" class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Material</th>
+                            <th>Quantidade</th>
+                            <th>Preço Unitário</th>
+                            <th>Altura</th>
+                            <th>Largura</th>
+                            <th>Cor</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Vidros)
+                        {
+                            <tr>
+                                <td>@item.MaterialId</td>
+                                <td>@item.TipoVidro</td>
+                                <td>@item.Quantidade</td>
+                                <td>@item.Preco.ToString("C")</td>
+                                <td>@item.Altura</td>
+                                <td>@item.Largura</td>
+                                <td>@item.Cor</td>
+                                <td><button class="btn-remover-vidro" data-id="@item.Id" data-tipo="vidro">Remover</button></td>
+                            </tr>
+                        }
+                        @foreach (var item in Model.Itens)
+                        {
+                            <tr>
+                                <td>@item.MaterialId</td>
+                                <td>@item.Material?.Nome</td>
+                                <td>@item.Quantidade</td>
+                                <td>@item.PrecoUnitario.ToString("C")</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>@item.Material?.Cor</td>
+                                <td><button class="btn-remover-item" data-id="@item.Id" data-tipo="item">Remover</button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Botão Salvar (ocupa toda largura) -->
+            <div class="grupo-campos botao-salvar" style="text-align:center;">
+                <button type="submit" id="btnSalvarPedido" class="btn btn-primary btn-acao btn-parcela">Salvar Alterações</button>
+            </div>
+
+        }
+    </div>
+
+    <script>
+        window.onload = function () {
+            reduzTotal();
+            atualizarCampos();
+            calculaValorParcela();
+            // document.getElementById("porcentagem-lucro-input").value = parseInt(document.getElementById("porcentagem-lucro-input").value) || 0;
+            // document.getElementById("porcentagem-parcela-input").value = parseInt(document.getElementById("porcentagem-parcela-input").value) || 0;        
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>
