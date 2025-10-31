@@ -76,4 +76,34 @@ Os materiais disponíveis no banco de dados podem ser escolhidos na tabela da es
 Ao final da página, são exibidos os valores do pedido, incluindo o custo total dos materiais para a loja e o valor total para o cliente, tanto à vista quanto parcelado.
 
 ### Como os orçamentos são salvos
+Após calcular o orçamento na **Calculadora de Orçamento** e selecionar a opção **Salvar**, todos os campos do formulário e os itens das tabelas são percorridos e gravados em seus respectivos bancos de dados.
+
+O orçamento tem todos os seus campos registrados e recebe uma *foreign key* que referencia o cliente ao qual está associado.  
+Os vidros são salvos em uma tabela própria, onde cada vidro recebe seu próprio ID, além das *foreign keys* correspondentes ao ID do orçamento e ao ID do material do painel utilizado no cálculo.  
+Os materiais também são armazenados em uma tabela específica que referencia o ID do material e o ID do orçamento, registrando apenas a **quantidade adquirida** e o **valor do item no momento da compra**, a fim de evitar possíveis inconsistências futuras.
+
+
 <img width="983" height="634" alt="image" src="https://github.com/user-attachments/assets/15ff2d0c-4d9a-4fd2-a0e1-b1907208865b" />
+
+### Arquitetura do sistema
+<img width="792" height="546" alt="Diagrama sem nome drawio" src="https://github.com/user-attachments/assets/11fe7cc0-60e2-4e71-a6c8-d2fffbf2c467" />
+
+## Como Executar o Projeto
+
+Clone este repositório e abra o projeto no **Visual Studio**.  
+Todas as dependências devem ser baixadas automaticamente via **NuGet**, mas caso ocorra algum problema, utilize a imagem abaixo como referência:
+
+<img width="370" height="150" alt="image" src="https://github.com/user-attachments/assets/5afe4408-dff6-4461-a221-da9f7b4410f7" />
+
+Após o download, será necessário criar o banco de dados no **MySQL**.  
+Crie um novo *schema* e execute o arquivo **`vidracaria.sql`** para que o banco seja preenchido automaticamente.
+
+Em seguida, abra o arquivo **`appsettings.json`** e substitua as informações da *Connection String* pelos dados do seu ambiente local:
+
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "server=localhost;port=3306;database=seu_schema;user=seu_user;password=sua_senha"
+}
+```
+
+Com tudo configurado, execute o arquivo **VidracariaDoMarcinho.sln** utilizando o perfil HTTPS e aguarde o carregamento do site.
